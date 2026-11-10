@@ -5,7 +5,7 @@
 
 **Prosjekt 09 — AI-server setup** · Subject: *Drift og Utvikling* · Team: max 3 students · Tags: Linux, AI, Sikkerhet, Infrastruktur, Nettverk
 
-📋 **Project board:** [AI Server — Development](PROJECT_URL_PLACEHOLDER)
+📋 **Project board:** [AI Server — Development](https://github.com/users/ganya002/projects/5)
 
 ---
 
@@ -133,7 +133,7 @@ flowchart LR
 | M13 — Benchmarking | Not started |
 | M14 — Documentation & Handover | Not started |
 
-Work is tracked on the [project board](PROJECT_URL_PLACEHOLDER). Start with the **Ready** column.
+Work is tracked on the [project board](https://github.com/users/ganya002/projects/5). Start with the **Ready** column.
 
 ## Important prerequisites
 
