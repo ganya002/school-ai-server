@@ -1,0 +1,61 @@
+Les teksten under og lag et sammendrag på fem punkter.
+
+Avsnitt 1. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 2. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 3. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 4. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 5. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 6. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 7. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 8. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 9. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 10. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 11. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 12. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 13. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 14. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 15. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 16. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 17. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 18. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 19. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 20. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 21. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 22. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 23. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 24. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 25. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 26. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 27. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 28. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 29. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 
+
+Avsnitt 30. En server i et skolenettverk må driftes sikkert. Det betyr at operativsystemet holdes oppdatert, at bare nødvendige porter er åpne, at administratorer logger inn med SSH-nøkler i stedet for passord, og at alle endringer dokumenteres. Brukere får bare de rettighetene de trenger, og logger lagres så lenge skolen har bestemt. Sikkerhetskopier tas jevnlig og gjenoppretting testes. 

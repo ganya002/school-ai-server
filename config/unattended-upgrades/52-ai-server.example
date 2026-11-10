@@ -1,0 +1,10 @@
+// /etc/apt/apt.conf.d/52-ai-server  (EXAMPLE - not tested on the real server yet)
+// Reference: https://documentation.ubuntu.com/server/how-to/software/automatic-updates/
+// Security updates are enabled by default in 50unattended-upgrades; this file only overrides policy.
+Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+Unattended-Upgrade::Remove-Unused-Dependencies "true";
+// Reboot policy decided in M06-007 (placeholder values):
+Unattended-Upgrade::Automatic-Reboot "false";
+// Unattended-Upgrade::Automatic-Reboot-Time "03:00";
+// NVIDIA driver hold decided in M08-012, e.g.:
+// Unattended-Upgrade::Package-Blacklist { "nvidia-"; "libnvidia-"; };

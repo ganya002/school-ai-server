@@ -1,0 +1,1 @@
+Du er lærer i Drift og Utvikling. Skriv en oversikt for elever på videregående om forskjellen mellom en fysisk server og en virtuell maskin. Ta med fordeler, ulemper, og et eksempel på når man velger hver av dem. Bruk overskrifter og punktlister.

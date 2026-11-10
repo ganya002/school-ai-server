@@ -1,0 +1,14 @@
+# /etc/sudoers.d/ai-operators  (EXAMPLE) - edit with: sudo visudo -f /etc/sudoers.d/ai-operators
+# Operators may only check/restart the AI services and read their logs.
+# Replace ENGINE_SERVICE / WEBUI_SERVICE with the real unit names (ADR M03-009).
+# Avoid editors, pagers and wildcards that allow shell escapes. journalctl is run with
+# --no-pager and SYSTEMD_PAGER is cleared to avoid a pager escape.
+Defaults:%ai-operators env_reset
+Cmnd_Alias AI_SVC = /usr/bin/systemctl status ENGINE_SERVICE, \
+                    /usr/bin/systemctl restart ENGINE_SERVICE, \
+                    /usr/bin/systemctl status WEBUI_SERVICE, \
+                    /usr/bin/systemctl restart WEBUI_SERVICE, \
+                    /usr/bin/journalctl --no-pager -u ENGINE_SERVICE -n 200, \
+                    /usr/bin/journalctl --no-pager -u WEBUI_SERVICE -n 200, \
+                    /usr/bin/nvidia-smi
+%ai-operators ALL=(root) NOPASSWD: AI_SVC

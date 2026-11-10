@@ -1,0 +1,16 @@
+# /etc/ssh/sshd_config.d/10-hardening.conf  (EXAMPLE - not tested on the real server yet)
+# Validate before restarting:  sudo sshd -t   and keep a second session open.
+# Reference: https://manpages.ubuntu.com/manpages/noble/man5/sshd_config.5.html
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PubkeyAuthentication yes
+PermitRootLogin no
+PermitEmptyPasswords no
+AllowGroups ai-admins ai-operators
+MaxAuthTries 3
+LoginGraceTime 30
+X11Forwarding no
+AllowAgentForwarding no
+# Optional: only listen on the VPN / admin interface (placeholder)
+# ListenAddress ADMIN_INTERFACE_IP
+# Banner /etc/issue.net

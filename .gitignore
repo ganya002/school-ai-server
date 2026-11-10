@@ -1,0 +1,102 @@
+# ---------------------------------------------------------------
+# Secrets & credentials: NEVER commit these
+# ---------------------------------------------------------------
+.env
+.env.*
+*.env
+!*.env.example
+!.env.example
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+*.kdbx
+id_rsa*
+id_ed25519*
+id_ecdsa*
+id_dsa*
+id_*
+!id_*.pub.example
+*.ppk
+authorized_keys
+known_hosts
+*credentials*
+!*credentials*.example*
+secrets/
+*.secret
+*.secrets
+passwords*.txt
+*token*
+!*token*.example*
+tailscale*.key
+wg*.conf
+!wg*.conf.example
+vault-password*
+.vault_pass*
+
+# Real inventory with addresses (commit *.example.ini only)
+deployment/ansible/inventory.ini
+deployment/ansible/inventory.yml
+deployment/ansible/host_vars/
+deployment/ansible/group_vars/*/vault*
+*.retry
+
+# ---------------------------------------------------------------
+# Model weights & caches (download on the server, never commit)
+# ---------------------------------------------------------------
+*.gguf
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.awq
+*.gptq
+models/
+.cache/
+huggingface/
+.ollama/
+
+# ---------------------------------------------------------------
+# Databases, chat data, logs (may contain student data)
+# ---------------------------------------------------------------
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+webui.db
+open-webui-data/
+data/
+backups/
+*.tar.gz
+*.zip
+*.log
+logs/
+chat-export*.json
+*.lynis-report*
+lynis-report.dat
+
+# ---------------------------------------------------------------
+# OS / editor junk
+# ---------------------------------------------------------------
+.DS_Store
+._*
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python / tooling
+__pycache__/
+*.pyc
+.venv/
+venv/
+publish-state.json

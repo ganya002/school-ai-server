@@ -1,0 +1,12 @@
+# /etc/fail2ban/jail.local  (EXAMPLE - not tested on the real server yet)
+# Reference: https://github.com/fail2ban/fail2ban
+[DEFAULT]
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+backend  = systemd
+# Do not ban the admin VPN range permanently by accident (placeholder; decide with IT)
+# ignoreip = 127.0.0.1/8 ::1 ADMIN_VPN_RANGE
+
+[sshd]
+enabled = true

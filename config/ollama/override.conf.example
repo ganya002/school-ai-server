@@ -1,0 +1,13 @@
+# /etc/systemd/system/ollama.service.d/override.conf  (EXAMPLE - only if Ollama is chosen)
+# Create with: sudo systemctl edit ollama.service   then: sudo systemctl daemon-reload && sudo systemctl restart ollama
+# Reference: https://docs.ollama.com/faq
+[Service]
+# Listen on localhost only (this is the default; set explicitly so nobody changes it by accident)
+Environment="OLLAMA_HOST=127.0.0.1:11434"
+# Model storage path decided in M03-017 (directory must be owned by the ollama user)
+Environment="OLLAMA_MODELS=/srv/ai/models/ollama"
+# Values below are placeholders; tune in M09-009..011
+Environment="OLLAMA_NUM_PARALLEL=2"
+Environment="OLLAMA_CONTEXT_LENGTH=16384"
+Environment="OLLAMA_KEEP_ALIVE=8h"
+Restart=always

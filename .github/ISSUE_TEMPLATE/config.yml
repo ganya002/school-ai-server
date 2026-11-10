@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ubuntu Server documentation
+    url: https://documentation.ubuntu.com/server/
+    about: Official Ubuntu Server documentation
+  - name: Open WebUI documentation
+    url: https://docs.openwebui.com/
+    about: Official Open WebUI documentation (roles, groups, permissions)
+  - name: Ollama documentation
+    url: https://docs.ollama.com/
+    about: Official Ollama documentation

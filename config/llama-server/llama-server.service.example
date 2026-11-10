@@ -1,0 +1,28 @@
+# /etc/systemd/system/llama-server.service  (EXAMPLE - only if llama.cpp server is chosen)
+# Reference: https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
+# Check flag names against `llama-server --help` for the installed version.
+[Unit]
+Description=llama.cpp server (school AI server)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=llama
+Group=llama
+# MODEL_FILE is the exact GGUF chosen in M03-005; context/parallel are placeholders (M09-009/010)
+ExecStart=/opt/llama.cpp/bin/llama-server \
+  --model /srv/ai/models/MODEL_FILE.gguf \
+  --host 127.0.0.1 --port 8080 \
+  --n-gpu-layers 999 \
+  --ctx-size 16384 \
+  --parallel 2
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/srv/ai/models
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
