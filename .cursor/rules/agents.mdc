@@ -6,3 +6,5 @@ alwaysApply: true
 Follow [AGENTS.md](../../AGENTS.md) at the repository root. It is the source of truth for every coding agent in this repository.
 
 DeepSeek owns Node A. Claude owns Node B. Coordinate only through the repo and GitHub issues. Never edit the other node's host-specific files. Never commit secrets or real IPs. Never force-push.
+
+Both nodes must keep running Windows 11 exactly as already installed. Do not install a new OS, Linux, Ubuntu, Proxmox, or any other system. Do not dual-boot, reinstall, wipe, or partition either machine. See [decisions/0001-windows-11-native.md](../../decisions/0001-windows-11-native.md).

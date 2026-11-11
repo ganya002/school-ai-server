@@ -8,7 +8,7 @@ Build a **school AI server** for IM students at a Norwegian upper-secondary scho
 
 - Local only: a web UI and, for permitted users, an API.
 - Nothing is exposed to the public internet.
-- The plan uses **two PCs** on the school LAN. See [docs/two-node-cluster.md](docs/two-node-cluster.md).
+- The plan uses **two PCs** on the school LAN, each staying on its existing **Windows 11** install ([ADR 0001](decisions/0001-windows-11-native.md)). See [docs/two-node-cluster.md](docs/two-node-cluster.md).
 - **Model: TBD** (see [docs/model-selection.md](docs/model-selection.md)). Do not pick a model on your own and do not plan an abliterated or uncensored model.
 
 Work follows the [GitHub project board](https://github.com/users/ganya002/projects/5).
@@ -17,7 +17,7 @@ Work follows the [GitHub project board](https://github.com/users/ganya002/projec
 
 | Node | Human owner | Agent | Owns |
 | --- | --- | --- | --- |
-| **Node A** | Gabby | **DeepSeek** | Inventory, OS, hardening and AI host on PC A |
+| **Node A** | Gabby | **DeepSeek** | Inventory, Windows 11 baseline, hardening and AI host on PC A |
 | **Node B** | Gabby's friend | **Claude** | The same work on PC B |
 | **Both** | Either, after claiming the issue | Either | Shared docs, policy, example configs, and the interconnect (M15) |
 
@@ -40,7 +40,7 @@ Host-specific files and sections:
 
 Shared files (`README.md`, `AGENTS.md`, `docs/architecture.md`, `docs/two-node-cluster.md`, example configs under `config/`, policy docs) may be edited by either agent via a PR.
 
-Existing issues in M04–M14 were first written for a single server. Treat unlabelled ones as **Node A** unless they already have the `both` or `node-b` label. Node B's hardware inventory, OS-install tracker, AI-host tracker, and the M15 interconnect issues are the Node B / both-node work. If a later M04–M14 task must be done separately on Node B, open a `node-b` issue in the same milestone and link the Node A issue. Do not duplicate the whole board up front.
+Existing issues in M04–M14 were first written for a single server. Treat unlabelled ones as **Node A** unless they already have the `both` or `node-b` label. Node B's hardware inventory, Windows 11 baseline tracker, AI-host tracker, and the M15 interconnect issues are the Node B / both-node work. If a later M04–M14 task must be done separately on Node B, open a `node-b` issue in the same milestone and link the Node A issue. Do not duplicate the whole board up front.
 
 ## Repo layout
 
@@ -67,7 +67,7 @@ Work goes **M01 → M14**, then **M15 — Node Interconnect**. Do not skip ahead
 | M01 | Discovery and inventory of **both** nodes |
 | M02 | Approval and policy (AUP, logging, **which model to run**) |
 | M03 | Architecture and design |
-| M04 | OS installation (each node, by its owner) |
+| M04 | Windows 11 baseline on the existing install (each node, by its owner) — not a new OS |
 | M05 | Remote access |
 | M06 | Security hardening |
 | M07 | Users and access |
@@ -80,7 +80,7 @@ Work goes **M01 → M14**, then **M15 — Node Interconnect**. Do not skip ahead
 | M14 | Documentation and handover |
 | M15 | Node interconnect (network, SSH trust, backend federation, failover) |
 
-M15 depends on **both** nodes having an OS (M04) and an AI host (M09). Some M15 tasks also need the web UI (M10). Node roles (which machine runs Open WebUI, how backends are split) stay **TBD until both M01 inventories are done**.
+M15 depends on **both** nodes having a prepared Windows 11 baseline (M04) and an AI host (M09). Some M15 tasks also need the web UI (M10). Node roles (which machine runs Open WebUI, how backends are split) stay **TBD until both M01 inventories are done**.
 
 Board: [AI Server — Development](https://github.com/users/ganya002/projects/5). Prefer issues already on the board over creating duplicates.
 
@@ -113,9 +113,10 @@ Do not delete issues. Close as **not planned** (with a comment) only when a deci
 
 This repository is **public**.
 
+- **Both nodes stay on Windows 11 exactly as already installed.** Do not install a new OS, Linux, Ubuntu, Proxmox, or any other system. Do not dual-boot, reinstall, wipe, or partition either machine. Milestone M04 is a Windows 11 baseline (updates, drivers, power settings), not an OS install. See [decisions/0001-windows-11-native.md](decisions/0001-windows-11-native.md).
 - Never commit secrets, passwords, API keys, tokens, `.env` files, SSH private keys, or model weights.
 - Never commit real IP addresses, hostnames, MAC addresses, VLAN IDs, student names, or other school-internal details. Use placeholders and `*.example` files.
-- Never run destructive disk commands, or wipe or partition either server, unless Gabby has explicitly approved that exact step for that machine.
+- Never run destructive disk commands, and never wipe or partition either server. Gabby has forbidden OS reinstalls and disk wipes (ADR 0001).
 - Never `git push --force` (or `--force-with-lease` to `main`).
 - Anything that touches a real server (SSH, installs, firewall changes, service restarts) needs **Gabby's OK** first. Node B's human owner must also be in the loop for Node B.
 - Do not pipe `curl` or `wget` into `sh`. Use official packages, signed releases, or a documented install you have reviewed.
@@ -144,10 +145,10 @@ Concrete issues you can advance from this repo and public documentation alone (d
 
 - **M02 policy:** [#28](https://github.com/ganya002/school-ai-server/issues/28) draft the student AUP (Norwegian). [#27](https://github.com/ganya002/school-ai-server/issues/27) licence checks once candidates are in [docs/model-selection.md](docs/model-selection.md) — do not choose the model yourself. Banner and system-prompt drafts for later teacher approval.
 - **M03 architecture:** engine comparison in [docs/ai-host.md](docs/ai-host.md) (GPU numbers stay TBD); draft port/firewall matrix with placeholder IPs; role model in [docs/users-and-roles.md](docs/users-and-roles.md); refine diagrams; draft ADR options for secrets storage.
-- **M06 hardening configs:** improve examples under `config/ssh`, `config/ufw`, `config/fail2ban`, `config/sudoers`, `config/unattended-upgrades`, and the structure of [docs/security-hardening.md](docs/security-hardening.md). Do not apply them to a server.
+- **M06 hardening configs:** improve examples under `config/windows-firewall`, `config/windows`, and `config/ssh` (adapt OpenSSH settings for Windows), and the structure of [docs/security-hardening.md](docs/security-hardening.md). Do not apply them to a server. Do not add ufw or other Linux-only tooling as the plan.
 - **M10 web UI:** improve `config/open-webui/open-webui.env.example` and draft [docs/web-ui-and-api.md](docs/web-ui-and-api.md) and the Norwegian [docs/student-user-guide.md](docs/student-user-guide.md).
 - **M12 test plans:** expand [docs/acceptance-checklist.md](docs/acceptance-checklist.md) and draft the test plan (including the A↔B checks in [docs/two-node-cluster.md](docs/two-node-cluster.md)).
 - **M14 docs:** structure and expand operations, backup and troubleshooting guides. Do not invent incidents or results.
-- **M15 interconnect (draft):** keep [docs/two-node-cluster.md](docs/two-node-cluster.md) accurate, with roles still TBD until both inventories exist. Example ufw allowlists and health-check commands may be drafted with placeholders.
+- **M15 interconnect (draft):** keep [docs/two-node-cluster.md](docs/two-node-cluster.md) accurate, with roles still TBD until both inventories exist. Example Windows Firewall allowlists and health-check commands may be drafted with placeholders.
 
 Do not close issues that need teacher/IT sign-off, hardware evidence, or a live server.
