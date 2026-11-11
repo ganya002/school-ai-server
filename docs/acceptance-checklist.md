@@ -3,8 +3,8 @@
 > Run in M12-013. Each item: pass / fail + link to evidence. Failures become bug issues.
 
 ## Approval & policy
-- [ ] Written teacher + IT decision on the abliterated model is recorded (ADR).
-- [ ] The deployed model matches the decision (abliterated or official fallback).
+- [ ] Written teacher + IT decision on which model to run is recorded (ADR).
+- [ ] The deployed model matches the decision.
 - [ ] AUP approved and shown to students (banner).
 - [ ] Logging and retention match the policy.
 
@@ -34,12 +34,18 @@
 - [ ] Services restart after failure and after reboot.
 - [ ] Three concurrent users served.
 - [ ] Rate limit works.
-- [ ] Fallback model switch tested.
+- [ ] Switching to another approved model is tested (if a second model is installed).
 
 ## Deployment server (scope per teacher)
 - [ ] Scope ADR accepted.
 - [ ] Hardening playbook is idempotent and hardens a test target.
 - [ ] (If in scope) Wazuh agent enrolled and SSH failures alert.
+
+## Two-node interconnect
+- [ ] Both nodes inventoried and on the same LAN/VLAN (placeholders in Git).
+- [ ] SSH key trust and ufw allowlists between Node A and Node B are in place.
+- [ ] Each inference backend is reachable from the web UI / proxy node and not from the public internet.
+- [ ] A↔B connectivity and failover tests in docs/two-node-cluster.md have passed.
 
 ## Handover
 - [ ] Backups taken and restore tested.

@@ -25,7 +25,7 @@
 | Mount | Size | Purpose |
 | --- | --- | --- |
 | `/` | TBD | OS |
-| `/srv/ai/models` (placeholder) | TBD (≥ primary + fallback model) | Model files |
+| `/srv/ai/models` (placeholder) | TBD (≥ the chosen model, plus headroom for a second model if wanted) | Model files |
 | `/var/lib/…` (web UI data) | TBD | Web UI data |
 | Swap | TBD | |
 

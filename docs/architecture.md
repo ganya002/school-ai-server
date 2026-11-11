@@ -8,7 +8,7 @@ Prosjekt 09 asks the team to get the school AI server running and make it availa
 
 | Fact | Value | Source |
 | --- | --- | --- |
-| Machine | TBD (which "school AI server") | M01-004 |
+| Machines | Two PCs (Node A and Node B), identities TBD | M01-004 |
 | Physical or VM | TBD | ADR (M03-003) |
 | CPU / RAM | TBD / TBD | inventory |
 | GPU / VRAM | TBD / TBD | inventory |
@@ -26,7 +26,7 @@ Prosjekt 09 asks the team to get the school AI server running and make it availa
 | Host security | ufw, fail2ban, unattended-upgrades, journald, Lynis baseline | Planned | M06 |
 | GPU | NVIDIA driver (Ubuntu packages), Container Toolkit only if Docker | Planned | M08 |
 | Inference | Ollama / llama.cpp server / vLLM, bound to 127.0.0.1 | TBD | M03-007 |
-| Model | Approved Qwen 27B variant, GGUF ~4-bit or larger | TBD | M02-003, M03-005 |
+| Model | TBD (see [model-selection.md](model-selection.md)) | TBD | M02 (model decision), M03-005 |
 | Web UI | Open WebUI with roles, groups, banner, rate limit | Planned | M10 |
 | TLS | School cert / internal CA / Tailscale HTTPS / reverse proxy | TBD | M06-014 |
 | Deployment server | Ansible control node + (optional) Wazuh | TBD after clarification | M03-002, M11 |
@@ -38,12 +38,16 @@ Prosjekt 09 asks the team to get the school AI server running and make it availa
 3. Deployment server → SSH → target machines (scope TBD).
 4. Logs → journald (retention per policy) → optionally Wazuh.
 
-## 4. Non-goals
+## 4. Two-node layout
+
+The service runs on **two PCs**. Roles (which node runs Open WebUI, whether backends are duplicated or split) are decided after both inventories. Details, placeholder addresses, health checks and the failover test list are in [two-node-cluster.md](two-node-cluster.md).
+
+## 5. Non-goals
 
 - No public internet exposure.
 - No new hardware purchases are assumed.
 - No model training or fine-tuning.
 
-## 5. Diagram
+## 6. Diagram
 
 See the Mermaid diagram in the [README](../README.md#planned-architecture). Update it when ADRs are accepted (M03-015).

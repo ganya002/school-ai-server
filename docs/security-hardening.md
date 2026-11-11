@@ -7,7 +7,7 @@
 | 1 | SSH keys only, no root login, AllowGroups | Stops password guessing and shared root | `sudo sshd -T \| grep -Ei 'passwordauth\|permitroot\|allowgroups'` | Not started |
 | 2 | ufw default deny incoming; allow only the port matrix | Minimises exposure | `sudo ufw status verbose` | Not started |
 | 3 | SSH only from the admin path | LAN users cannot reach SSH | Test from a student-network device | Not started |
-| 4 | No internet exposure | Keeps the uncensored model and admin access internal | IT confirms no forwarding (M06-003) | Not started |
+| 4 | No internet exposure | Keeps the model and admin access internal | IT confirms no forwarding (M06-003) | Not started |
 | 5 | fail2ban sshd jail | Bans brute-force attempts | `sudo fail2ban-client status sshd` | Not started |
 | 6 | unattended-upgrades (security) | Automatic patching | `sudo unattended-upgrade --dry-run --debug` | Not started |
 | 7 | Reboot policy | Kernel patches take effect | docs/operations.md | Not started |

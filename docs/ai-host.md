@@ -7,7 +7,7 @@
 | | Ollama | llama.cpp `llama-server` | vLLM |
 | --- | --- | --- | --- |
 | Model format | GGUF (via Ollama library or imported) | GGUF | Hugging Face safetensors, AWQ/GPTQ/FP8 etc. |
-| Requested model available as | `huihui_ai/Qwen3.8-abliterated:27b-*` | GGUF files from Hugging Face | `huihui-ai/Huihui-Qwen3.8-27B-abliterated` (BF16 ~55 GB; needs a quantized variant to fit typical VRAM) |
+| School model available as | TBD (Ollama tag or imported GGUF) | GGUF files from the publisher | TBD (weights must be quantized to fit the inventoried VRAM; see [model-selection.md](model-selection.md)) |
 | OpenAI-compatible API | Yes ([docs](https://docs.ollama.com/openai)) | Yes ([README](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)) | Yes ([docs](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html)) |
 | Concurrency | `OLLAMA_NUM_PARALLEL` | `--parallel` slots | Continuous batching (best throughput) |
 | Install | Official script/package ([Linux](https://docs.ollama.com/linux)) | Prebuilt release or build ([build](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md)) | Python/pip or Docker ([docs](https://docs.vllm.ai/en/latest/)) |

@@ -7,6 +7,8 @@
 
 📋 **Project board:** [AI Server — Development](https://github.com/users/ganya002/projects/5)
 
+Agents working in this repository: start with [AGENTS.md](AGENTS.md).
+
 ---
 
 ## The assignment
@@ -25,14 +27,15 @@ The server can be a physical machine or a VM that is controlled through remote a
 
 ## Goal
 
-Run a ~27B Qwen model for IM students through a web interface (and, for permitted users, an API), on school hardware, without exposing anything to the public internet.
+Run a local model for IM students through a web interface (and, for permitted users, an API), on **two school PCs** (Node A and Node B), without exposing anything to the public internet. How the two nodes talk is in [docs/two-node-cluster.md](docs/two-node-cluster.md).
+
+**Model: TBD** (see [docs/model-selection.md](docs/model-selection.md)).
 
 | Item | Plan | Status |
 | --- | --- | --- |
-| Requested model | "Qwen 27B abliterated" (refusal-removed community version). Candidate found during planning: [`huihui-ai/Huihui-Qwen3.8-27B-abliterated`](https://huggingface.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated) (base: [`Qwen/Qwen3.8-27B`](https://huggingface.co/Qwen/Qwen3.8-27B)) | **Needs written teacher + IT approval** (M02) |
-| Fallback model | Official [`Qwen/Qwen3.8-27B`](https://huggingface.co/Qwen/Qwen3.8-27B) | Used if the abliterated model is not approved |
-| Quantization | GGUF ~4-bit (Q4_K_M class, roughly 16.5–17.5 GB file) or larger if VRAM allows | TBD, depends on the GPU's VRAM |
-| Hardware | "The school AI server" | CPU / RAM / GPU / VRAM / disk: **TBD** (M01) |
+| Model | TBD (see [docs/model-selection.md](docs/model-selection.md)) | Not chosen yet (M02), after the GPU is inventoried (M01) |
+| Quantization | TBD, depends on the GPU's VRAM | M03 |
+| Hardware | Two PCs: **Node A** (Gabby / DeepSeek) and **Node B** (Gabby's friend / Claude) | CPU / RAM / GPU / VRAM / disk per node: **TBD** (M01) |
 | Physical or VM | Bare-metal Ubuntu or Ubuntu VM on Proxmox with GPU passthrough | TBD (ADR, M03) |
 | OS | Ubuntu Server LTS | Version TBD (ADR, M03) |
 | Inference engine | Ollama, llama.cpp server or vLLM | TBD (ADR, M03) |
@@ -51,15 +54,18 @@ flowchart LR
         A["SSH client (key only)"]
     end
 
-    subgraph Server["School AI server (physical or Proxmox VM: TBD)"]
+    subgraph Server["School AI cluster (two PCs, roles TBD after M01)"]
         direction TB
         FW["ufw firewall + fail2ban"]
         PROXY["HTTPS (TLS method TBD)"]
         UI["Open WebUI<br/>accounts · roles · groups · banner · rate limit"]
         ENG["Inference engine (TBD: Ollama / llama.cpp / vLLM)<br/>localhost only"]
-        GPU[("NVIDIA GPU (model/VRAM TBD)<br/>Qwen 27B GGUF ~4-bit")]
+        GPUA[("Node A GPU (VRAM TBD)<br/>Inference backend A")]
+        GPUB[("Node B GPU (VRAM TBD)<br/>Inference backend B")]
         ANS["Deployment server (TBD)<br/>Ansible control node / Wazuh"]
-        FW --> PROXY --> UI --> ENG --> GPU
+        FW --> PROXY --> UI --> ENG
+        ENG --> GPUA
+        ENG --> GPUB
     end
 
     VPN{{"School VPN / Tailscale / LAN<br/>(TBD, no public exposure)"}}
@@ -74,6 +80,8 @@ flowchart LR
 ```text
 .
 ├── README.md                 This file
+├── AGENTS.md                 Guide for coding agents (and humans) working in this repo
+├── CLAUDE.md                 Short pointer to AGENTS.md for Claude on Node B
 ├── CONTRIBUTING.md           How the team works (board, branches, what may be committed)
 ├── .gitignore                Blocks secrets, .env, model weights (*.gguf, *.safetensors) and databases
 ├── docs/                     Documentation per area (see table below)
@@ -83,7 +91,8 @@ flowchart LR
 ├── deployment/ansible/       Deployment-server material (example inventory, roles go here)
 ├── scripts/
 │   ├── linux/                collect-hardware-inventory.sh (read-only)
-│   └── benchmark/            bench_openai.py (tokens/sec against an OpenAI-compatible API)
+│   ├── benchmark/            bench_openai.py (tokens/sec against an OpenAI-compatible API)
+│   └── check-secrets.sh      Scan a diff for secrets and real IPs before you push
 ├── benchmarks/               Methodology, prompts and (real) results
 ├── assets/diagrams/          Exported diagrams
 └── .github/                  Issue and pull request templates
@@ -94,7 +103,8 @@ flowchart LR
 | Topic | Document |
 | --- | --- |
 | Architecture | [docs/architecture.md](docs/architecture.md) |
-| Acceptable use policy & approval | [docs/acceptable-use-policy.md](docs/acceptable-use-policy.md) |
+| Two-node cluster | [docs/two-node-cluster.md](docs/two-node-cluster.md) |
+| Acceptable use policy | [docs/acceptable-use-policy.md](docs/acceptable-use-policy.md) |
 | Model selection & quantization | [docs/model-selection.md](docs/model-selection.md) |
 | OS installation | [docs/os-installation.md](docs/os-installation.md) |
 | Network & port matrix | [docs/network.md](docs/network.md) |
@@ -132,6 +142,7 @@ flowchart LR
 | M12 — Testing | Not started |
 | M13 — Benchmarking | Not started |
 | M14 — Documentation & Handover | Not started |
+| M15 — Node Interconnect | Not started (after both nodes have OS + AI host) |
 
 Work is tracked on the [project board](https://github.com/users/ganya002/projects/5). Start with the **Ready** column.
 
@@ -140,7 +151,7 @@ Work is tracked on the [project board](https://github.com/users/ganya002/project
 Nothing is installed until these are in place. Each has its own issue:
 
 - Written permission from the teacher and school IT to use and reinstall the machine (M01).
-- **Written approval from the teacher and IT for running an abliterated (uncensored) model for IM students** (M02). Without it, the official Qwen model is used.
+- A written decision on which model to run, after it is checked against the criteria in [docs/model-selection.md](docs/model-selection.md) (M02).
 - An approved acceptable use policy, logging decision and retention period (M02).
 - The teacher's clarification of what "Deployment Server" means in this assignment (M03).
 - An approved remote-access method. **The server is never exposed to the public internet.**
@@ -153,10 +164,10 @@ The assignment allows **at most 3 students**. Each task on the board is sized fo
 | --- | --- | --- |
 | Responsible teacher | TBD | Approval, assessment |
 | School IT contact | TBD | Network, accounts, security approval |
-| Student 1 | TBD | TBD (e.g. OS, remote access, security) |
-| Student 2 | TBD | TBD (e.g. GPU, AI host, model) |
-| Student 3 | TBD | TBD (e.g. web UI, users, policy, docs) |
+| Student 1 (Node A) | Gabby | Node A owner; DeepSeek is the coding agent |
+| Student 2 (Node B) | Gabby's friend | Node B owner; Claude is the coding agent |
+| Student 3 | TBD | TBD (shared docs, policy, web UI — if a third member joins) |
 
 ## Licence
 
-No licence has been chosen. This is a private school project repository.
+No licence has been chosen. This repository is **public**. Never commit secrets, passwords, real IP addresses, hostnames, MAC addresses, student names or other school-internal details.

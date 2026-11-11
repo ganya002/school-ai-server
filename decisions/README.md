@@ -22,8 +22,9 @@ Important decisions are written down here so the team, the teacher and school IT
 | --- | --- | --- |
 | Permission to use and reinstall the hardware | M01 | Teacher + IT |
 | What infrastructure details may be committed | M01 | IT |
-| **Abliterated model approved or not** (and conditions) | M02 | **Teacher + IT** |
-| Primary and fallback model | M02 | Teacher |
+| Which model to run (and any conditions) | M02 | **Teacher + IT** |
+| Node roles (web UI placement, backend split vs duplicate) | M15 / after M01 | Teacher |
+| Private link between nodes (LAN + ufw, or WireGuard/Tailscale if IT allows) | M15 | IT |
 | Logging: what is stored, who may read it; retention | M02 | Teacher + IT (privacy) |
 | Rate limits / fair use | M02 | Teacher |
 | Who may approve new models | M02 | Teacher |
