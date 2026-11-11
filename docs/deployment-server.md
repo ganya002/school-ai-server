@@ -15,7 +15,7 @@
 
 | Option | What it is | What we would show | Official docs | Fit with this server |
 | --- | --- | --- | --- | --- |
-| **A. Automation deployment server** | An Ansible control node that pushes hardened configuration (SSH, ufw, fail2ban, updates) to machines over SSH | Playbooks that harden this server and a test target identically | [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) | Light; no extra services |
+| **A. Automation deployment server** | An Ansible control node that pushes hardened configuration (OpenSSH, Windows Firewall, updates) to machines over SSH | Playbooks that harden this server and a test target identically | [Ansible](https://docs.ansible.com/ansible/latest/getting_started/index.html) | Light; no extra services |
 | **B. SIEM / agent deployment** | A Wazuh manager that collects security events, plus agents deployed to machines | Agents enrolled, alerts for SSH failures | [Wazuh quickstart](https://documentation.wazuh.com/current/quickstart.html), [agent](https://documentation.wazuh.com/current/installation-guide/wazuh-agent/index.html) | Central components need significant RAM/CPU; may compete with the AI workload |
 | **C. Splunk "Deployment Server"** | A Splunk Enterprise feature that distributes apps/configs to Splunk forwarders ("deployment clients") | Forwarders receiving config from the server | [Splunk: update your deployment](https://help.splunk.com/en/splunk-enterprise/administer/update-your-deployment/) | Needs Splunk licence/infrastructure; only if the school uses Splunk |
 | D. Something else | e.g. PXE/OS deployment, WSUS-like update server | TBD | TBD | TBD |
@@ -36,7 +36,7 @@
 | --- | --- |
 | Ansible control node | Not started |
 | Example inventory: [`deployment/ansible/inventory.example.ini`](../deployment/ansible/inventory.example.ini) | Placeholder |
-| Roles: ssh-hardening, ufw-baseline, updates-fail2ban, wazuh-agent | Not started |
+| Roles: ssh-hardening, windows-firewall-baseline, windows-update, wazuh-agent | Not started |
 | Wazuh manager location | TBD (ADR) |
 | Test target | TBD |
 

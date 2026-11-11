@@ -42,7 +42,7 @@ Some tasks only apply to one path (e.g. *(VM path)* or *only if Docker was chose
 
 ## 3. Branches and pull requests
 
-- Branch name: `<issue-number>-short-description`, e.g. `42-ufw-port-matrix`.
+- Branch name: `<issue-number>-short-description`, e.g. `42-firewall-port-matrix`.
 - Small commits and pull requests. Reference the issue in the message, e.g. `Refs #12` or `Closes #12`.
 - Open a pull request that links the issue (`Closes #42`).
 - A second team member reviews every pull request.
@@ -81,5 +81,5 @@ If a secret is committed by accident, tell the project owner and school IT immed
 - Write documentation in **English**, except student-facing text (AUP, student guide, banners), which is **Norwegian bokmål** (English optional alongside).
 - Write `TBD` for anything not known yet. Never guess school infrastructure details.
 - When you finish a task, update the relevant docs and, if the change is in scope, [docs/acceptance-checklist.md](docs/acceptance-checklist.md).
-- Link official documentation (Ubuntu, NVIDIA, Ollama/llama.cpp/vLLM, Open WebUI, Hugging Face model cards, Ansible, Wazuh, Proxmox).
+- Link official documentation (Windows 11, NVIDIA, Ollama for Windows / llama.cpp, Open WebUI, Hugging Face model cards, Ansible, Wazuh).
 - Only record results that someone actually measured or observed.

@@ -1,3 +1,4 @@
+# Not the current plan. Both nodes stay on Windows 11 (see decisions/0001-windows-11-native.md).
 # /etc/systemd/system/llama-server.service  (EXAMPLE - only if llama.cpp server is chosen)
 # Reference: https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md
 # Check flag names against `llama-server --help` for the installed version.

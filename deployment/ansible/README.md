@@ -1,6 +1,6 @@
 # Ansible (Deployment Server)
 
-> Status: **Not started — scope depends on the teacher's clarification** (M03-002, M11-001). See [docs/deployment-server.md](../../docs/deployment-server.md).
+> Status: **Not started — scope depends on the teacher's clarification** (M03-002, M11-001). See [docs/deployment-server.md](../../docs/deployment-server.md). Target hosts are Windows 11 ([ADR 0001](../../decisions/0001-windows-11-native.md)); do not write Ubuntu/ufw roles as the plan.
 
 Planned layout (create in M11):
 
@@ -11,8 +11,8 @@ deployment/ansible/
 ├── site.yml                  Applies the roles below
 └── roles/
     ├── ssh-hardening/        (M11-005) same settings as config/ssh/10-hardening.conf.example
-    ├── ufw-baseline/         (M11-006) port matrix from docs/network.md
-    ├── updates-fail2ban/     (M11-007)
+    ├── windows-firewall-baseline/  (M11-006) port matrix from docs/network.md
+    ├── windows-update/       (M11-007) Windows Update baseline (not fail2ban)
     └── wazuh-agent/          (M11-014, only if Wazuh is in scope)
 ```
 

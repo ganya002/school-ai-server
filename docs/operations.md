@@ -1,6 +1,6 @@
 # Operations
 
-> Status: **Draft.** Completed in M14-006.
+> Status: **Draft.** Completed in M14-006. Host OS is Windows 11 ([ADR 0001](../decisions/0001-windows-11-native.md)).
 
 ## Project context
 
@@ -10,29 +10,29 @@
 | Assessment form | TBD (M01-002) |
 | Allowed operating hours | TBD (M01-016) |
 | Reboot policy | TBD (M06-007) |
+| Power plan | No sleep / hibernate on AC power (see [os-installation.md](os-installation.md)) |
 
 ## Daily checks
 
-```bash
-systemctl --failed
-systemctl status <engine-service> <webui-service>
+```powershell
+Get-Service <engine-service>, <webui-service>, sshd
 nvidia-smi
-df -h
-sudo ufw status
-sudo fail2ban-client status sshd
+Get-PSDrive -PSProvider FileSystem
+Get-NetFirewallProfile
+Get-WinEvent -LogName Security -MaxEvents 20   # or a documented log query
 ```
 
 ## Start / stop / restart
 
-TBD (service names per ADR).
+TBD (service or Task Scheduler names per ADR). Prefer `Restart-Service` / Task Scheduler, not systemd.
 
 ## Updates
 
 | Component | How | Who | When |
 | --- | --- | --- | --- |
-| OS security updates | unattended-upgrades | automatic | daily |
-| OS other updates | `apt full-upgrade` | ai-admins | TBD |
-| NVIDIA driver | per hold policy | ai-admins | maintenance window |
+| Windows security updates | Windows Update | automatic, within the reboot policy | TBD |
+| Other Windows updates | Windows Update, manual approve if needed | ai-admins | TBD |
+| NVIDIA driver | per hold / update policy | ai-admins | maintenance window |
 | Inference engine | TBD | ai-admins | TBD |
 | Web UI | TBD | ai-admins | TBD |
 | Model | Model update procedure + approval | per approval rule (M02-014) | when approved |

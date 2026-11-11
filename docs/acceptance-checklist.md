@@ -9,29 +9,29 @@
 - [ ] Logging and retention match the policy.
 
 ## OS & remote access
-- [ ] Ubuntu Server LTS installed and fully updated.
-- [ ] SSH key-only, no root login, AllowGroups.
+- [ ] Both nodes still run the original Windows 11 install (ADR 0001); the baseline (updates, drivers, power plan, timezone) is complete.
+- [ ] OpenSSH Server: key-only, no Administrator SSH login, allowed groups/users only.
 - [ ] Remote access only through the approved private path.
 - [ ] No port reachable from the internet (IT confirmation).
-- [ ] Console access documented and tested.
+- [ ] Physical console access documented and tested.
 
 ## Security
-- [ ] ufw default deny; open ports match the port matrix from each network.
-- [ ] fail2ban active and tested.
-- [ ] unattended-upgrades active.
-- [ ] Lynis baseline recorded; warnings fixed or accepted.
-- [ ] Inference API only on 127.0.0.1.
+- [ ] Windows Defender Firewall: inbound default block; open ports match the port matrix from each network.
+- [ ] Brute-force protection for SSH is in place and tested (Windows lockout / OpenSSH settings).
+- [ ] Windows Update is active; the reboot policy is documented.
+- [ ] A Windows security baseline is recorded; leftover findings are fixed or accepted.
+- [ ] Inference API only on 127.0.0.1 (and, if needed, the peer node).
 
 ## Users & access
 - [ ] Personal accounts only; no shared accounts.
-- [ ] sudo rights per role tested.
+- [ ] Local admin / operator rights per role tested.
 - [ ] Web UI: no open sign-up; groups and model access per role.
 - [ ] Student test account cannot reach admin functions.
 - [ ] API keys only for permitted roles.
 
 ## AI host
 - [ ] Model runs fully on the GPU (or offload documented).
-- [ ] Services restart after failure and after reboot.
+- [ ] Services restart after failure and after reboot (Windows service or Task Scheduler).
 - [ ] Three concurrent users served.
 - [ ] Rate limit works.
 - [ ] Switching to another approved model is tested (if a second model is installed).
@@ -43,7 +43,7 @@
 
 ## Two-node interconnect
 - [ ] Both nodes inventoried and on the same LAN/VLAN (placeholders in Git).
-- [ ] SSH key trust and ufw allowlists between Node A and Node B are in place.
+- [ ] SSH key trust and Windows Firewall allowlists between Node A and Node B are in place.
 - [ ] Each inference backend is reachable from the web UI / proxy node and not from the public internet.
 - [ ] A↔B connectivity and failover tests in docs/two-node-cluster.md have passed.
 

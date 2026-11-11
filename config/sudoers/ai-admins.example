@@ -1,3 +1,4 @@
+# Not the current plan. Both nodes stay on Windows 11 (see decisions/0001-windows-11-native.md).
 # /etc/sudoers.d/ai-admins  (EXAMPLE) - edit with: sudo visudo -f /etc/sudoers.d/ai-admins
 # Reference: https://www.sudo.ws/docs/man/sudoers.man/
 %ai-admins ALL=(ALL:ALL) ALL

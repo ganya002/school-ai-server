@@ -1,3 +1,4 @@
+# Not the current plan. Both nodes stay on Windows 11 (see decisions/0001-windows-11-native.md).
 // /etc/apt/apt.conf.d/52-ai-server  (EXAMPLE - not tested on the real server yet)
 // Reference: https://documentation.ubuntu.com/server/how-to/software/automatic-updates/
 // Security updates are enabled by default in 50unattended-upgrades; this file only overrides policy.

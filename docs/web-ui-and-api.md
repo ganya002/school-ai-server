@@ -1,13 +1,13 @@
 # Web UI & API
 
-> Status: **Planned.** Open WebUI is the proposed web interface ([docs](https://docs.openwebui.com/)).
+> Status: **Planned.** Open WebUI is the proposed web interface ([docs](https://docs.openwebui.com/)). Install it with a **Windows-friendly method** (for example a native Python install). WSL2 or Docker Desktop needs Gabby's OK and is not the default ([ADR 0001](../decisions/0001-windows-11-native.md)).
 
 ## 1. Installation (M10-001)
 
 | Item | Value |
 | --- | --- |
 | Version | TBD |
-| Method | TBD (Docker or Python, per ADR) |
+| Method | TBD (native Python on Windows by default; Docker Desktop / WSL2 only with Gabby's OK) |
 | Data directory | TBD (persistent) |
 | `WEBUI_SECRET_KEY` | In the secret store, never in Git |
 | Connection to engine | TBD (`OLLAMA_BASE_URL` or OpenAI-compatible URL to 127.0.0.1) |

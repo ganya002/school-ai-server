@@ -1,3 +1,4 @@
+# Not the current plan. Both nodes stay on Windows 11 (see decisions/0001-windows-11-native.md).
 # /etc/systemd/system/ollama.service.d/override.conf  (EXAMPLE - only if Ollama is chosen)
 # Create with: sudo systemctl edit ollama.service   then: sudo systemctl daemon-reload && sudo systemctl restart ollama
 # Reference: https://docs.ollama.com/faq

@@ -3,7 +3,7 @@
 > **Status: Planning. Nothing is installed yet.**
 > This repository holds the plan, documentation and example configuration for the school AI server. No hardware has been inspected, nothing has been installed, configured or tested yet. Every value marked `TBD` is still unknown.
 
-**Prosjekt 09 — AI-server setup** · Subject: *Drift og Utvikling* · Team: max 3 students · Tags: Linux, AI, Sikkerhet, Infrastruktur, Nettverk
+**Prosjekt 09 — AI-server setup** · Subject: *Drift og Utvikling* · Team: max 3 students · Tags: Windows 11, AI, Sikkerhet, Infrastruktur, Nettverk
 
 📋 **Project board:** [AI Server — Development](https://github.com/users/ganya002/projects/5)
 
@@ -25,9 +25,11 @@ Tasks from the assignment:
 
 The server can be a physical machine or a VM that is controlled through remote access. AI models need a lot of RAM and preferably a GPU.
 
+**Project decision (2026-11-11):** both nodes keep the Windows 11 install already on the machine. Milestone M04 is a Windows 11 baseline, not a reinstall. See [ADR 0001](decisions/0001-windows-11-native.md).
+
 ## Goal
 
-Run a local model for IM students through a web interface (and, for permitted users, an API), on **two school PCs** (Node A and Node B), without exposing anything to the public internet. How the two nodes talk is in [docs/two-node-cluster.md](docs/two-node-cluster.md).
+Run a local model for IM students through a web interface (and, for permitted users, an API), on **two school PCs** (Node A and Node B), each staying on its existing **Windows 11** install ([ADR 0001](decisions/0001-windows-11-native.md)), without exposing anything to the public internet. How the two nodes talk is in [docs/two-node-cluster.md](docs/two-node-cluster.md).
 
 **Model: TBD** (see [docs/model-selection.md](docs/model-selection.md)).
 
@@ -35,10 +37,10 @@ Run a local model for IM students through a web interface (and, for permitted us
 | --- | --- | --- |
 | Model | TBD (see [docs/model-selection.md](docs/model-selection.md)) | Not chosen yet (M02), after the GPU is inventoried (M01) |
 | Quantization | TBD, depends on the GPU's VRAM | M03 |
-| Hardware | Two PCs: **Node A** (Gabby / DeepSeek) and **Node B** (Gabby's friend / Claude) | CPU / RAM / GPU / VRAM / disk per node: **TBD** (M01) |
-| Physical or VM | Bare-metal Ubuntu or Ubuntu VM on Proxmox with GPU passthrough | TBD (ADR, M03) |
-| OS | Ubuntu Server LTS | Version TBD (ADR, M03) |
-| Inference engine | Ollama, llama.cpp server or vLLM | TBD (ADR, M03) |
+| Hardware | Two PCs: **Node A** (Gabby / DeepSeek) and **Node B** (Gabby's friend / Claude) | CPU / RAM / GPU / VRAM / disk per node: see inventory (M01) |
+| Physical or VM | Physical machines; no new hypervisor | Decided: existing Windows 11 ([ADR 0001](decisions/0001-windows-11-native.md)) |
+| OS | Windows 11 as already installed | Decided ([ADR 0001](decisions/0001-windows-11-native.md)); edition/build per inventory |
+| Inference engine | Native Windows (e.g. Ollama for Windows or llama.cpp server). WSL2/Docker Desktop only with Gabby's OK | TBD (ADR, M03) |
 | Web UI | Open WebUI (accounts, roles, groups) | Planned |
 | Remote access | SSH key-only via school VPN / Tailscale / LAN only. No public exposure | Method TBD (ADR, M03) |
 | Deployment Server | Most plausible: Ansible deployment of hardened configs + Wazuh agent deployment | **Waiting for teacher's clarification** (M03) |
@@ -56,7 +58,7 @@ flowchart LR
 
     subgraph Server["School AI cluster (two PCs, roles TBD after M01)"]
         direction TB
-        FW["ufw firewall + fail2ban"]
+        FW["Windows Firewall"]
         PROXY["HTTPS (TLS method TBD)"]
         UI["Open WebUI<br/>accounts · roles · groups · banner · rate limit"]
         ENG["Inference engine (TBD: Ollama / llama.cpp / vLLM)<br/>localhost only"]
@@ -86,11 +88,11 @@ flowchart LR
 ├── .gitignore                Blocks secrets, .env, model weights (*.gguf, *.safetensors) and databases
 ├── docs/                     Documentation per area (see table below)
 ├── decisions/                Architecture Decision Records (ADRs) + template
-├── inventory/                Hardware, network and Proxmox inventory templates (no secrets)
-├── config/                   Example configs with placeholders only (ssh, ufw, fail2ban, sudoers, engine, web UI)
+├── inventory/                Hardware and network inventory templates (no secrets)
+├── config/                   Example configs with placeholders only (Windows Firewall, OpenSSH, engine, web UI)
 ├── deployment/ansible/       Deployment-server material (example inventory, roles go here)
 ├── scripts/
-│   ├── linux/                collect-hardware-inventory.sh (read-only)
+│   ├── linux/                leftover Linux inventory helper (not the plan)
 │   ├── benchmark/            bench_openai.py (tokens/sec against an OpenAI-compatible API)
 │   └── check-secrets.sh      Scan a diff for secrets and real IPs before you push
 ├── benchmarks/               Methodology, prompts and (real) results
@@ -106,7 +108,7 @@ flowchart LR
 | Two-node cluster | [docs/two-node-cluster.md](docs/two-node-cluster.md) |
 | Acceptable use policy | [docs/acceptable-use-policy.md](docs/acceptable-use-policy.md) |
 | Model selection & quantization | [docs/model-selection.md](docs/model-selection.md) |
-| OS installation | [docs/os-installation.md](docs/os-installation.md) |
+| Windows 11 baseline | [docs/os-installation.md](docs/os-installation.md) |
 | Network & port matrix | [docs/network.md](docs/network.md) |
 | Remote access | [docs/remote-access.md](docs/remote-access.md) |
 | Security hardening | [docs/security-hardening.md](docs/security-hardening.md) |
@@ -131,7 +133,7 @@ flowchart LR
 | M01 — Discovery & Inventory | Ready to start |
 | M02 — Approval & Policy | Not started |
 | M03 — Architecture & Design | Not started |
-| M04 — OS Installation | Not started |
+| M04 — Windows 11 baseline (existing install) | Not started |
 | M05 — Remote Access | Not started |
 | M06 — Security Hardening | Not started |
 | M07 — Users & Access | Not started |
@@ -150,7 +152,7 @@ Work is tracked on the [project board](https://github.com/users/ganya002/project
 
 Nothing is installed until these are in place. Each has its own issue:
 
-- Written permission from the teacher and school IT to use and reinstall the machine (M01).
+- Written permission from the teacher and school IT to *use* the existing Windows 11 machines and to install AI software (M01). The OS will not be reinstalled ([ADR 0001](decisions/0001-windows-11-native.md)).
 - A written decision on which model to run, after it is checked against the criteria in [docs/model-selection.md](docs/model-selection.md) (M02).
 - An approved acceptable use policy, logging decision and retention period (M02).
 - The teacher's clarification of what "Deployment Server" means in this assignment (M03).

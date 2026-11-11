@@ -2,7 +2,7 @@
 
 > Two machines: **Node A** (Gabby / DeepSeek) and **Node B** (Gabby's friend / Claude). Fill in with school IT. Only record details IT allows in this repository (M01-006); **never** passwords. Unknown: `TBD`.
 
-Helper (read-only, run only on an already running Linux system with IT's permission): [`scripts/linux/collect-hardware-inventory.sh`](../scripts/linux/collect-hardware-inventory.sh).
+Both nodes stay on the Windows 11 install already on the machine ([ADR 0001](../decisions/0001-windows-11-native.md)). Inventory is collected with read-only PowerShell (no IPs, MACs, serials or names in this public repo). A leftover Linux helper, only for a system that is already running Linux, is [`scripts/linux/collect-hardware-inventory.sh`](../scripts/linux/collect-hardware-inventory.sh).
 
 ## Node A
 
@@ -11,7 +11,7 @@ Helper (read-only, run only on an already running Linux system with IT's permiss
 | Machine (asset tag / nickname) | TBD | |
 | Location (server room / classroom) | TBD | |
 | Whole machine or VM for the team | TBD | |
-| Currently running (empty / OS / Proxmox VE version) | TBD | |
+| Currently running (empty / OS / Proxmox VE version) | TBD (must remain the existing Windows 11 install; ADR 0001) | |
 | Data that must be preserved | TBD | |
 | CPU model | TBD | |
 | Cores / threads | TBD | |
@@ -49,7 +49,7 @@ Helper (read-only, run only on an already running Linux system with IT's permiss
 | IOMMU (VT-d / AMD-Vi) support | Yes: VT-x on, VT-d available (Windows reports DMA protection). BIOS screen not checked. | Win32_DeviceGuard, 2026-11-11 (#219) |
 | Disk 1 (type, size) | NVMe SSD, Kingston NV2 2 TB; ~1738 GB free; holds Windows | Get-PhysicalDisk, 2026-11-11 (#215) |
 | Disk 2 (type, size) | None | Get-PhysicalDisk, 2026-11-11 (#215) |
-| NICs and link speed | Realtek 2.5 GbE (linked at **100 Mbps only**, check cable/port); Intel Wi-Fi 6 AX201 | Get-NetAdapter, 2026-11-11 (#216) |
+| NICs and link speed | Realtek 2.5 GbE (linked at **1 Gbps** after a cable change, reported by the owner 2026-11-11); Intel Wi-Fi 6 AX201 | Get-NetAdapter, 2026-11-11 (#216); owner report 2026-11-11 |
 | Cooling / UPS | TBD (owner to confirm); no UPS reported to Windows | #221 |
 | Allowed operating hours | TBD (owner / IT); sleep is currently enabled | #221 |
 | BMC / IPMI present | No (consumer board) | Board model, 2026-11-11 |

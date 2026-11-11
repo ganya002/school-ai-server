@@ -1,6 +1,6 @@
 # Remote Access
 
-> Status: **Planned.** The access method is decided in M03-010. **The server is never exposed to the public internet.**
+> Status: **Planned.** The access method is decided in M03-010. **The server is never exposed to the public internet.** Both nodes use **OpenSSH Server on Windows 11** ([ADR 0001](../decisions/0001-windows-11-native.md)).
 
 ## 1. Requirements
 
@@ -13,13 +13,14 @@
 
 ## 2. SSH policy
 
+- Install and enable [OpenSSH Server on Windows](https://learn.microsoft.com/windows-server/administration/openssh/openssh-overview) (optional feature). Node B already had it running at inventory time; confirm it stays enabled after reboots.
 - Keys only (`PasswordAuthentication no`, `KbdInteractiveAuthentication no`).
-- No root login (`PermitRootLogin no`).
-- Only groups `ai-admins` and `ai-operators` (`AllowGroups`).
+- Do not allow SSH as `Administrator` (`PermitRootLogin no`, or the Windows equivalent).
+- Only the approved admin and operator accounts or Windows groups (`AllowUsers` / `AllowGroups`).
 - Personal ed25519 keys with passphrases; private keys never leave the owner's device.
-- fail2ban sshd jail.
+- Slow down brute-force attempts with `MaxAuthTries` and Windows account lockout (fail2ban is not the plan).
 
-Example drop-in: [`config/ssh/10-hardening.conf.example`](../config/ssh/10-hardening.conf.example). Always validate with `sudo sshd -t` and keep a second session open before restarting.
+Config lives in `C:\ProgramData\ssh\sshd_config`. A Linux-style drop-in example remains at [`config/ssh/10-hardening.conf.example`](../config/ssh/10-hardening.conf.example) for the *settings* to apply; adapt paths and group names to Windows. Always validate the config and keep a second session or a physical console available before restarting `sshd`.
 
 ## 3. Private access path (M03-010, M05-006)
 
@@ -34,10 +35,11 @@ Chosen: TBD.
 
 ## 4. Emergency / console access (M05-009)
 
+There is no Proxmox console. Use a physical keyboard and monitor, or BMC/IPMI only if the inventory shows one.
+
 | Path | Who | Tested |
 | --- | --- | --- |
-| Proxmox web console (VM path) | TBD | TBD |
-| Physical keyboard/monitor (physical path) | TBD | TBD |
+| Physical keyboard/monitor | TBD | TBD |
 | BMC/IPMI (if present) | TBD | TBD |
 
 ## 5. Client config example
@@ -52,4 +54,4 @@ Host ai-server
 
 ## 6. Adding / removing an admin key
 
-See [users-and-roles.md](users-and-roles.md#onboarding-and-offboarding).
+See [users-and-roles.md](users-and-roles.md#onboarding-and-offboarding). On Windows, admin keys often go in `C:\ProgramData\ssh\administrators_authorized_keys` or the user's `.ssh\authorized_keys`. Record the chosen method here when it is set up. Never commit keys.

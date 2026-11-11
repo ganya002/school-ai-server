@@ -1,3 +1,5 @@
+> Not the current plan. Both nodes stay on Windows 11 ([ADR 0001](../../decisions/0001-windows-11-native.md)). Use `config/windows-firewall/rules.example.ps1` instead.
+
 # ufw rules (EXAMPLE, placeholders)
 
 Order matters: allow SSH **before** enabling, and keep console access ready.

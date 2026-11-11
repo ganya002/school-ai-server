@@ -1,4 +1,6 @@
-# Proxmox Inventory (VM path only)
+# Proxmox Inventory (not used)
+
+> Both nodes stay on native Windows 11 ([ADR 0001](../decisions/0001-windows-11-native.md)). This template is leftover from the dropped VM path. Do not install Proxmox.
 
 > Only if the AI server runs as a VM. Never record passwords or API tokens.
 

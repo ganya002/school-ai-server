@@ -1,3 +1,4 @@
+# Not the current plan. Both nodes stay on Windows 11 (see decisions/0001-windows-11-native.md).
 # /etc/sudoers.d/ai-operators  (EXAMPLE) - edit with: sudo visudo -f /etc/sudoers.d/ai-operators
 # Operators may only check/restart the AI services and read their logs.
 # Replace ENGINE_SERVICE / WEBUI_SERVICE with the real unit names (ADR M03-009).

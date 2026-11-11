@@ -2,7 +2,7 @@
 
 | Script | What it does | Changes the system? |
 | --- | --- | --- |
-| [`linux/collect-hardware-inventory.sh`](linux/collect-hardware-inventory.sh) | Prints CPU, RAM, GPU, disk and NIC facts for `inventory/hardware-inventory.md` | No (read-only) |
+| [`linux/collect-hardware-inventory.sh`](linux/collect-hardware-inventory.sh) | Leftover Linux helper. Inventory on these nodes is done with read-only PowerShell ([ADR 0001](../decisions/0001-windows-11-native.md)) | No (read-only; not the plan) |
 | [`benchmark/bench_openai.py`](benchmark/bench_openai.py) | Measures tokens/sec and time-to-first-token against an OpenAI-compatible endpoint | No |
 | [`check-secrets.sh`](check-secrets.sh) | Scans the git diff for secrets and real IPs/MACs before a push | No |
 

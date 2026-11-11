@@ -1,17 +1,19 @@
 # Example configuration
 
-Everything in this folder is an **example with placeholders**. Nothing here has been tested on the real server yet (the sudoers and sshd examples were only syntax-checked with `visudo -c` and `sshd -t`). Copy a file to the server, replace the placeholders, validate it (e.g. `sshd -t`, `visudo -c`), and record the real setting in the matching `docs/` page.
+Everything in this folder is an **example with placeholders**. Nothing here has been tested on the real servers yet. Both nodes stay on **Windows 11** ([ADR 0001](../decisions/0001-windows-11-native.md)). Prefer the Windows Firewall and autostart examples below. Older Linux files (`ufw`, `fail2ban`, `unattended-upgrades`, systemd units, sudoers) are leftover references, not the plan.
+
+Copy a file to the server only with Gabby's OK, replace the placeholders, and record the real setting in the matching `docs/` page.
 
 Never put real secrets, keys or uncommittable addresses in these files.
 
 | File | Goes to | Doc |
 | --- | --- | --- |
-| `ssh/10-hardening.conf.example` | `/etc/ssh/sshd_config.d/10-hardening.conf` | docs/remote-access.md |
-| `ufw/rules.example.md` | commands | docs/network.md |
-| `fail2ban/jail.local.example` | `/etc/fail2ban/jail.local` | docs/security-hardening.md |
-| `unattended-upgrades/52-ai-server.example` | `/etc/apt/apt.conf.d/52-ai-server` | docs/security-hardening.md |
-| `sudoers/ai-admins.example` | `/etc/sudoers.d/ai-admins` (edit with `visudo -f`) | docs/users-and-roles.md |
-| `sudoers/ai-operators.example` | `/etc/sudoers.d/ai-operators` | docs/users-and-roles.md |
-| `ollama/override.conf.example` | `/etc/systemd/system/ollama.service.d/override.conf` | docs/ai-host.md |
-| `llama-server/llama-server.service.example` | `/etc/systemd/system/llama-server.service` | docs/ai-host.md |
+| `windows-firewall/rules.example.ps1` | run (carefully) in an elevated PowerShell, after replacing placeholders | docs/network.md, docs/security-hardening.md |
+| `windows/ai-host-autostart.example.md` | Windows service or Task Scheduler | docs/ai-host.md |
+| `ssh/10-hardening.conf.example` | Adapt into `C:\ProgramData\ssh\sshd_config` | docs/remote-access.md |
 | `open-webui/open-webui.env.example` | env file for Open WebUI | docs/web-ui-and-api.md |
+| `ufw/rules.example.md` | *Not the plan* (Linux leftover) | — |
+| `fail2ban/jail.local.example` | *Not the plan* (Linux leftover) | — |
+| `unattended-upgrades/52-ai-server.example` | *Not the plan* (Linux leftover) | — |
+| `sudoers/ai-admins.example` / `ai-operators.example` | Role intent only; use Windows groups | docs/users-and-roles.md |
+| `ollama/override.conf.example` / `llama-server/llama-server.service.example` | *Not the plan* (systemd leftovers) | — |

@@ -1,6 +1,6 @@
 # Users & Roles
 
-> Status: **Planned.** Proposed role model; confirmed in M03-013. No student names or personal data are stored in this repository.
+> Status: **Planned.** Proposed role model; confirmed in M03-013. No student names or personal data are stored in this repository. Host accounts are **Windows local accounts** (or domain accounts if IT later approves), not Linux users ([ADR 0001](../decisions/0001-windows-11-native.md)).
 
 ## 1. Identity source (M01-019, M03-014)
 
@@ -10,15 +10,17 @@
 | May the project integrate with them? | TBD |
 | Web UI account method | TBD (default: admin-created accounts or sign-up as *pending* approved by an admin) |
 
-## 2. Linux roles (proposed)
+## 2. Windows host roles (proposed)
 
-| Group | Who | SSH | sudo | Notes |
+| Group | Who | SSH | Elevation | Notes |
 | --- | --- | --- | --- | --- |
-| `ai-admins` | Team admins, later teacher/IT | Yes (key) | Full | [`config/sudoers/ai-admins.example`](../config/sudoers/ai-admins.example) |
-| `ai-operators` | Team members / teacher who restart services | Yes (key) | Only listed service/log commands | [`config/sudoers/ai-operators.example`](../config/sudoers/ai-operators.example) |
+| `ai-admins` (local group) | Team admins, later teacher/IT | Yes (key) | Full local admin, or an equivalent | Adapt [`config/sudoers/ai-admins.example`](../config/sudoers/ai-admins.example) to Windows group membership; do not assume sudo |
+| `ai-operators` (local group) | Team members / teacher who restart services | Yes (key) | Only listed service/log actions (service ACL or a scheduled task) | Adapt the operators example the same way |
 | `ai-students` | Only if shell access is approved (default: **not created**) | No by default | None | M07-003 |
-| service user (e.g. `ollama`) | Inference engine | No login | None | M09-001 |
-| deploy user | Ansible (if in scope) | Key, from control node only | As needed | M11-004 |
+| service account (e.g. for Ollama) | Inference engine | No login | None | M09-001 |
+| deploy account | Ansible (if in scope) | Key, from control node only | As needed | M11-004 |
+
+Linux sudoers examples under `config/sudoers/` are reference for *who may do what*, not files to copy onto these PCs.
 
 ## 3. Web UI roles (Open WebUI)
 
@@ -35,16 +37,16 @@ Open WebUI has the roles **admin**, **user** and **pending**; the first account 
 
 | Role | Command / action | Expected | Actual |
 | --- | --- | --- | --- |
-| ai-admins | `sudo -v` | allowed | TBD |
-| ai-operators | `sudo systemctl restart <engine>` | allowed | TBD |
-| ai-operators | `sudo -i` | denied | TBD |
+| ai-admins | elevate / manage services | allowed | TBD |
+| ai-operators | restart the inference service | allowed | TBD |
+| ai-operators | an unbounded admin action | denied | TBD |
 | non-member | SSH login | denied | TBD |
 
 ## 5. Directory permissions (M07-010)
 
-| Path | Owner:group | Mode |
+| Path | Owner / ACL | Notes |
 | --- | --- | --- |
-| model directory | TBD | TBD |
+| model directory | TBD | On an existing volume; do not create a new partition |
 | engine config | TBD | TBD |
 | web UI data | TBD | TBD |
 
