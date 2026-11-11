@@ -11,8 +11,8 @@
 ## OS & remote access
 - [ ] Both nodes still run the original Windows 11 install (ADR 0001); the baseline (updates, drivers, power plan, timezone) is complete.
 - [ ] OpenSSH Server: key-only, no Administrator SSH login, allowed groups/users only.
-- [ ] Remote access only through the approved private path.
-- [ ] No port reachable from the internet (IT confirmation).
+- [ ] Admin SSH only through the approved private path.
+- [ ] No inbound router ports. Raw TTS ports are not public. The Funnel gateway, if approved, requires an API key.
 - [ ] Physical console access documented and tested.
 
 ## Security
@@ -44,7 +44,7 @@
 ## Two-node interconnect
 - [ ] Both nodes inventoried and on the same LAN/VLAN (placeholders in Git).
 - [ ] SSH key trust and Windows Firewall allowlists between Node A and Node B are in place.
-- [ ] Each inference backend is reachable from the web UI / proxy node and not from the public internet.
+- [ ] Each TTS backend is reachable from the gateway node and not from the public internet.
 - [ ] A↔B connectivity and failover tests in docs/two-node-cluster.md have passed.
 
 ## Handover

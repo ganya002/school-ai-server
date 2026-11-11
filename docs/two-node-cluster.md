@@ -1,6 +1,6 @@
 # Two-node cluster (Node A and Node B)
 
-> Status: **Planned.** Two PCs will run as one school AI service, each on its existing **Windows 11** install ([ADR 0001](../decisions/0001-windows-11-native.md)). **Roles are TBD** until both machines are inventoried in M01. All addresses below are placeholders, not real school IPs.
+> Status: **Planned.** Two PCs run one **text-to-speech** service (Norwegian + English; another group runs the LLM), each on its existing **Windows 11** install ([ADR 0001](../decisions/0001-windows-11-native.md)). Roles for the gateway are TBD. All addresses and URLs below are placeholders.
 
 The two machines are:
 
@@ -20,8 +20,8 @@ Agents coordinate only through this repository and GitHub issues. See [AGENTS.md
 - Both nodes sit on the **same school LAN / VLAN** (record the segment, or a placeholder, in [network-inventory.md](../inventory/network-inventory.md)).
 - Each node gets a **static address or a DHCP reservation**, written here only as a placeholder until IT allows otherwise (`192.0.2.10` / `192.0.2.11`).
 - They trust each other over **SSH keys** (OpenSSH Server on Windows; one key pair per admin, plus a dedicated interconnect key if useful). Password SSH stays off.
-- **Private link:** prefer the plain school LAN, with **Windows Defender Firewall** on each node allowing only the other node's address on the interconnect ports (SSH from admins, and the inference API only from the node that runs the proxy). Use **WireGuard or Tailscale only if school IT allows it**. If they do, the allowlist uses the overlay addresses instead of (or as well as) the LAN addresses. If they do not, do not install an overlay VPN.
-- Nothing on either node is forwarded from the public internet.
+- **Private link:** prefer the plain school LAN, with **Windows Defender Firewall** on each node allowing only the other node's address on the interconnect ports (SSH from admins, and each TTS API only from the gateway node). A mesh overlay is not required for the student path.
+- **Student path (any network):** an **outbound-only Tailscale Funnel** on the gateway node, after school IT + teacher approval. No inbound router ports. Placeholder URL: `https://tts-gateway.example-tailnet.ts.net`. Raw TTS ports and SSH are not published. Details: [tts-plan.md](tts-plan.md) §6.
 
 ## 2. Roles (decision after both M01 inventories)
 
@@ -29,11 +29,11 @@ Pick one of these once CPU, RAM, GPU and VRAM are known for **both** PCs. Record
 
 | Option | When to use | What runs where |
 | --- | --- | --- |
-| **A. Shared web UI, two backends** (default proposal) | Both nodes can run the chosen model (or a chosen quant of it) | Each node runs its own inference backend, bound to localhost or to the other node only. **One** node runs Open WebUI and a reverse proxy that load-balances or fails over to both backends over the OpenAI-compatible API. |
+| **A. Shared gateway, several TTS backends** (default proposal) | The main lineup is split by node (see [tts-plan.md](tts-plan.md)) | Each node runs its TTS engines on `127.0.0.1`. **One** node runs the voice-picker gateway and the Tailscale Funnel. The gateway calls Node A and Node B backends over the interconnect (or localhost for local engines) using `POST /v1/audio/speech`. |
 | **B. Model split** | VRAM (or licence/quality needs) differ a lot | Each node runs a different model or quant. The web UI lists both; users pick a model, or a lightweight router sends a request type to a given node. Failover is limited (the other model is not a copy). |
 | **C. Active / spare** | One node is clearly weaker | The stronger node serves all traffic; the other is a warm spare with the same model, used only if the first backend fails. |
 
-Proposed default, to confirm after inventory: **option A**, with Open WebUI + the reverse proxy on Node A unless Node B is the better place for that (disk, RAM, or network reachability from students).
+Proposed default: **option A**, with the voice-picker gateway and Funnel on one node (which node is TBD). Backend choice is in [tts-plan.md](tts-plan.md).
 
 Shared configuration (example Windows Firewall rules, Open WebUI env, service/Task Scheduler snippets, proxy snippets) lives in this repo as `*.example` files. Each node applies the same patterns with its own placeholders. Do not copy real secrets into the repo.
 
@@ -43,8 +43,8 @@ Shared configuration (example Windows Firewall rules, Open WebUI env, service/Ta
 | --- | --- | --- |
 | SSH | each node, port 22 (or the decided SSH port) | Admin path only (M05), plus the other node if interconnect SSH is wanted |
 | Inference API | `127.0.0.1` and/or the other node, OpenAI-compatible port TBD | The proxy / Web UI node only, never students directly, never the internet |
-| Open WebUI / HTTPS | the UI node, 443 (TLS method TBD) | Students and staff on the approved school path |
-| WireGuard / Tailscale | only if IT approved | The two nodes (and approved admins) |
+| TTS engines | `127.0.0.1` ports in [tts-plan.md](tts-plan.md) §5 | Gateway only |
+| Gateway + Tailscale Funnel | Funnel-allowed port 443, 8443 or 10000 | Students on any network, after IT + teacher approval; placeholder `https://tts-gateway.example-tailnet.ts.net` |
 
 Exact numbers go in [docs/network.md](network.md) when the port matrix is decided (M03).
 
@@ -88,7 +88,7 @@ Run this in M15 after both Windows 11 baselines and both AI hosts are up. Attach
 - [ ] **Failover:** stop the inference service on one node. A new chat request still succeeds on the other backend (option A or C) or fails clearly for a model that only lived on the stopped node (option B). Record how long it takes.
 - [ ] Start the stopped service again; both backends show healthy.
 - [ ] Repeat the failover test in the other direction.
-- [ ] Confirm neither inference port nor SSH answers from the public internet (IT or an off-site check, as in M06).
+- [ ] Confirm neither raw TTS port nor SSH answers from the public internet. Only the approved Funnel gateway URL should answer, and only with a valid API key.
 
 ## 7. Related documents
 
@@ -97,5 +97,7 @@ Run this in M15 after both Windows 11 baselines and both AI hosts are up. Attach
 - [remote-access.md](remote-access.md) — SSH and admin path
 - [security-hardening.md](security-hardening.md) — Windows Firewall
 - [ai-host.md](ai-host.md) — inference engines
-- [web-ui-and-api.md](web-ui-and-api.md) — Open WebUI
+- [tts-plan.md](tts-plan.md) — lineup, ports, tunnel
+- [client-guide.md](client-guide.md) — student/API usage
+- [web-ui-and-api.md](web-ui-and-api.md) — optional UI
 - [acceptance-checklist.md](acceptance-checklist.md)

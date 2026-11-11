@@ -29,28 +29,28 @@ The server can be a physical machine or a VM that is controlled through remote a
 
 ## Goal
 
-Run a local model for IM students through a web interface (and, for permitted users, an API), on **two school PCs** (Node A and Node B), each staying on its existing **Windows 11** install ([ADR 0001](decisions/0001-windows-11-native.md)), without exposing anything to the public internet. How the two nodes talk is in [docs/two-node-cluster.md](docs/two-node-cluster.md).
+Run a **text-to-speech** service (Norwegian + English) for IM students, on **two school PCs** (Node A and Node B), each staying on its existing **Windows 11** install ([ADR 0001](decisions/0001-windows-11-native.md)). Another group runs the LLM. How the two nodes talk is in [docs/two-node-cluster.md](docs/two-node-cluster.md). The lineup is in [docs/tts-plan.md](docs/tts-plan.md).
 
-**Model: TBD** (see [docs/model-selection.md](docs/model-selection.md)).
+Students should reach the gateway from any network through an outbound-only **Tailscale Funnel** (no paid domain, no inbound router ports), after school IT + teacher approval. Placeholder URL: `https://tts-gateway.example-tailnet.ts.net`.
 
 | Item | Plan | Status |
 | --- | --- | --- |
-| Model | TBD (see [docs/model-selection.md](docs/model-selection.md)) | Not chosen yet (M02), after the GPU is inventoried (M01) |
-| Quantization | TBD, depends on the GPU's VRAM | M03 |
-| Hardware | Two PCs: **Node A** (Gabby / DeepSeek) and **Node B** (Gabby's friend / Claude) | CPU / RAM / GPU / VRAM / disk per node: see inventory (M01) |
+| Service | Text-to-speech (Norwegian + English); another group runs the LLM | Proposed lineup in [docs/tts-plan.md](docs/tts-plan.md), confirm in #26 |
+| Main models | VoxCPM2 (B); Qwen3-TTS 1.7B, Phonon, Kokoro (A); Piper `no_NO` on both | Proposed |
+| Hardware | Two PCs: **Node A** (Gabby / DeepSeek) and **Node B** (Gabby's friend / Claude) | See inventory (M01). Node A 16 GB is the discrete GPU only |
 | Physical or VM | Physical machines; no new hypervisor | Decided: existing Windows 11 ([ADR 0001](decisions/0001-windows-11-native.md)) |
 | OS | Windows 11 as already installed | Decided ([ADR 0001](decisions/0001-windows-11-native.md)); edition/build per inventory |
-| Inference engine | Native Windows (e.g. Ollama for Windows or llama.cpp server). WSL2/Docker Desktop only with Gabby's OK | TBD (ADR, M03) |
-| Web UI | Open WebUI (accounts, roles, groups) | Planned |
-| Remote access | SSH key-only via school VPN / Tailscale / LAN only. No public exposure | Method TBD (ADR, M03) |
+| TTS engines | Native Windows (`pip` / official Windows apps). WSL2/Docker Desktop only with Gabby's OK | Proposed |
+| Student access | Tailscale Funnel (default), API keys required. Cloudflare named tunnel only if the school later provides a domain | Needs IT + teacher OK |
+| Remote admin | SSH key-only on a private path. Not published on Funnel | Method TBD (ADR, M03) |
 | Deployment Server | Most plausible: Ansible deployment of hardened configs + Wazuh agent deployment | **Waiting for teacher's clarification** (M03) |
 
 ## Planned architecture
 
 ```mermaid
 flowchart LR
-    subgraph Students["IM students (school network, TBD: also off-site?)"]
-        B["Browser"]
+    subgraph Students["IM students (any network, after approval)"]
+        B["App or browser"]
     end
     subgraph Admins["Team admins / operators"]
         A["SSH client (key only)"]
@@ -60,19 +60,19 @@ flowchart LR
         direction TB
         FW["Windows Firewall"]
         PROXY["HTTPS (TLS method TBD)"]
-        UI["Open WebUI<br/>accounts · roles · groups · banner · rate limit"]
-        ENG["Inference engine (TBD: Ollama / llama.cpp / vLLM)<br/>localhost only"]
-        GPUA[("Node A GPU (VRAM TBD)<br/>Inference backend A")]
-        GPUB[("Node B GPU (VRAM TBD)<br/>Inference backend B")]
+        UI["TTS gateway<br/>API keys · rate limits · kill switch"]
+        ENG["TTS engines on 127.0.0.1<br/>POST /v1/audio/speech"]
+        GPUA[("Node A: Qwen3-TTS, Phonon, Kokoro, Piper")]
+        GPUB[("Node B: VoxCPM2, Piper")]
         ANS["Deployment server (TBD)<br/>Ansible control node / Wazuh"]
         FW --> PROXY --> UI --> ENG
         ENG --> GPUA
         ENG --> GPUB
     end
 
-    VPN{{"School VPN / Tailscale / LAN<br/>(TBD, no public exposure)"}}
+    VPN{{"Tailscale Funnel (outbound only)<br/>placeholder https://tts-gateway.example-tailnet.ts.net"}}
 
-    B -- "HTTPS" --> FW
+    B -- "HTTPS + API key" --> FW
     A -- "SSH via private path" --> VPN --> FW
     ANS -. "deploys hardened config / agents" .-> T["Other target machines (TBD)"]
 ```
@@ -106,8 +106,10 @@ flowchart LR
 | --- | --- |
 | Architecture | [docs/architecture.md](docs/architecture.md) |
 | Two-node cluster | [docs/two-node-cluster.md](docs/two-node-cluster.md) |
+| TTS plan | [docs/tts-plan.md](docs/tts-plan.md) |
+| Client guide (TTS API) | [docs/client-guide.md](docs/client-guide.md) |
 | Acceptable use policy | [docs/acceptable-use-policy.md](docs/acceptable-use-policy.md) |
-| Model selection & quantization | [docs/model-selection.md](docs/model-selection.md) |
+| Model selection (TTS) | [docs/model-selection.md](docs/model-selection.md) |
 | Windows 11 baseline | [docs/os-installation.md](docs/os-installation.md) |
 | Network & port matrix | [docs/network.md](docs/network.md) |
 | Remote access | [docs/remote-access.md](docs/remote-access.md) |
@@ -156,7 +158,7 @@ Nothing is installed until these are in place. Each has its own issue:
 - A written decision on which model to run, after it is checked against the criteria in [docs/model-selection.md](docs/model-selection.md) (M02).
 - An approved acceptable use policy, logging decision and retention period (M02).
 - The teacher's clarification of what "Deployment Server" means in this assignment (M03).
-- An approved remote-access method. **The server is never exposed to the public internet.**
+- An approved remote-admin method. SSH and raw TTS ports stay private. The student HTTPS path is an outbound Tailscale Funnel, only after school IT + teacher approval.
 
 ## Project team
 

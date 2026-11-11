@@ -1,6 +1,6 @@
 # Remote Access
 
-> Status: **Planned.** The access method is decided in M03-010. **The server is never exposed to the public internet.** Both nodes use **OpenSSH Server on Windows 11** ([ADR 0001](../decisions/0001-windows-11-native.md)).
+> Status: **Planned.** Admin access is decided in M03-010. **SSH and raw TTS ports are never published to the public internet.** Student TTS HTTPS, if approved, uses an outbound-only Tailscale Funnel ([tts-plan.md](tts-plan.md) §6). Both nodes use **OpenSSH Server on Windows 11** ([ADR 0001](../decisions/0001-windows-11-native.md)).
 
 ## 1. Requirements
 
@@ -8,8 +8,7 @@
 | --- | --- | --- |
 | Admins on the school network | Yes | SSH over the admin path |
 | Admins off-site | TBD (M01-018) | School VPN / Tailscale / WireGuard (TBD) |
-| Students on the school network | Yes (web UI only) | HTTPS |
-| Students off-site | TBD (M01-018) | TBD, only through an approved private path |
+| Students on any network (school, home, mobile hotspot) | Yes, after IT + teacher approval | HTTPS via Tailscale Funnel, API key required. Placeholder `https://tts-gateway.example-tailnet.ts.net` |
 
 ## 2. SSH policy
 
@@ -27,7 +26,8 @@ Config lives in `C:\ProgramData\ssh\sshd_config`. A Linux-style drop-in example 
 | Option | Notes |
 | --- | --- |
 | School VPN | Preferred if available; IT manages it |
-| Tailscale | Needs IT approval (external coordination service). Restrict with ACLs ([docs](https://tailscale.com/kb/1018/acls)) |
+| Tailscale Funnel (student TTS path, default) | Outbound only; students need no client; Funnel ports 443/8443/10000 and bandwidth limits apply. Needs IT + teacher approval. [Funnel docs](https://tailscale.com/docs/features/tailscale-funnel) |
+| Tailscale (admin) | Needs IT approval. Restrict with ACLs ([docs](https://tailscale.com/kb/1018/acls)). Do not Funnel SSH. |
 | WireGuard | Self-hosted; needs a reachable endpoint, which may require IT changes |
 | LAN only | Simplest; no off-site access |
 

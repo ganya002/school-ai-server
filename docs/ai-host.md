@@ -1,6 +1,6 @@
 # AI Host (Inference Engine)
 
-> Status: **Planned.** Engine choice in M03-007. Both nodes run Windows 11 natively ([ADR 0001](../decisions/0001-windows-11-native.md)). The model is **TBD**.
+> Status: **Planned.** This team runs **TTS engines**, not an LLM. The lineup, ports and Windows install notes are in [tts-plan.md](tts-plan.md). Both nodes run Windows 11 natively ([ADR 0001](../decisions/0001-windows-11-native.md)).
 
 ## 1. Engine comparison (to be completed in M03-006)
 

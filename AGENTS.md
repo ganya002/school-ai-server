@@ -6,10 +6,10 @@ This file is the source of truth for every coding agent working in this reposito
 
 Build a **school AI server** for IM students at a Norwegian upper-secondary school (VGS), as Prosjekt 09 in *Drift og Utvikling*.
 
-- Local only: a web UI and, for permitted users, an API.
-- Nothing is exposed to the public internet.
+- This team runs a **text-to-speech** service (Norwegian + English). Another group runs the LLM. See [docs/tts-plan.md](docs/tts-plan.md).
 - The plan uses **two PCs** on the school LAN, each staying on its existing **Windows 11** install ([ADR 0001](decisions/0001-windows-11-native.md)). See [docs/two-node-cluster.md](docs/two-node-cluster.md).
-- **Model: TBD** (see [docs/model-selection.md](docs/model-selection.md)). Do not pick a model on your own and do not plan an abliterated or uncensored model.
+- Students should reach the **gateway** from any network via an outbound-only **Tailscale Funnel**, after school IT + teacher approval. No inbound router ports, no paid domain. Placeholder: `https://tts-gateway.example-tailnet.ts.net`. Raw TTS ports and SSH stay private.
+- Confirm the TTS lineup in #26; do not swap in a licence-restricted model for the public service, and do not plan an abliterated or uncensored LLM.
 
 Work follows the [GitHub project board](https://github.com/users/ganya002/projects/5).
 
@@ -51,6 +51,8 @@ CLAUDE.md                 Short pointer here for Claude / T3
 CONTRIBUTING.md           Team workflow
 docs/                     Design and operations docs (English, except student-facing)
 docs/two-node-cluster.md  How Node A and Node B talk
+docs/tts-plan.md          TTS lineup, ports and public Funnel path
+docs/client-guide.md      How students/apps call the gateway
 decisions/                Architecture Decision Records
 inventory/                Hardware and network templates (placeholders only)
 config/                   Example configs with placeholders
@@ -80,7 +82,7 @@ Work goes **M01 → M14**, then **M15 — Node Interconnect**. Do not skip ahead
 | M14 | Documentation and handover |
 | M15 | Node interconnect (network, SSH trust, backend federation, failover) |
 
-M15 depends on **both** nodes having a prepared Windows 11 baseline (M04) and an AI host (M09). Some M15 tasks also need the web UI (M10). Node roles (which machine runs Open WebUI, how backends are split) stay **TBD until both M01 inventories are done**.
+M15 depends on **both** nodes having a prepared Windows 11 baseline (M04) and an AI host (M09). Some M15 tasks also need the web UI (M10). Which machine runs the TTS gateway and Funnel stays **TBD** until that decision issue is done. The main TTS lineup per node is in [docs/tts-plan.md](docs/tts-plan.md).
 
 Board: [AI Server — Development](https://github.com/users/ganya002/projects/5). Prefer issues already on the board over creating duplicates.
 
