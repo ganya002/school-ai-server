@@ -14,31 +14,31 @@ Important decisions are written down here so the team, the teacher and school IT
 
 | # | Title | Status | Date | Responsible |
 | --- | --- | --- | --- | --- |
-| — | *(no decisions recorded yet)* | | | |
+| 0001 | [Both nodes stay on Windows 11](0001-windows-11-native.md) | Accepted | 2026-11-11 | Gabby |
 
 ## Decisions expected during the project
 
 | Decision | Milestone | Needs approval from |
 | --- | --- | --- |
-| Permission to use and reinstall the hardware | M01 | Teacher + IT |
+| Permission to use the existing Windows 11 machines (no reinstall) | M01 | Teacher + IT |
 | What infrastructure details may be committed | M01 | IT |
 | Which model to run (and any conditions) | M02 | **Teacher + IT** |
 | Node roles (web UI placement, backend split vs duplicate) | M15 / after M01 | Teacher |
-| Private link between nodes (LAN + ufw, or WireGuard/Tailscale if IT allows) | M15 | IT |
+| Private link between nodes (LAN + Windows Firewall, or WireGuard/Tailscale if IT allows) | M15 | IT |
 | Logging: what is stored, who may read it; retention | M02 | Teacher + IT (privacy) |
 | Rate limits / fair use | M02 | Teacher |
 | Who may approve new models | M02 | Teacher |
 | Meaning and scope of "Deployment Server" | M03 / M11 | Teacher |
-| Physical install vs Proxmox VM | M03 | IT |
+| Physical install vs Proxmox VM | M03 | **Decided: existing Windows 11, no VM** (ADR 0001) |
 | Quantization / model file | M03 | — |
-| Inference engine (Ollama / llama.cpp / vLLM) | M03 | — |
-| OS version | M03 | IT |
+| Inference engine (Ollama for Windows / llama.cpp / others with a Windows path) | M03 | — |
+| OS version | M03 | **Decided: Windows 11 as already installed** (ADR 0001) |
 | Native vs Docker per component | M03 | — |
 | Remote access method | M03 | IT |
 | Hostname and IP method | M03 | IT |
 | Student account method (local / LDAP / SSO TBD) | M03 | IT |
 | Secret store | M03 | IT |
-| Disk layout and model path | M03 | — |
+| Model folder on an existing volume (no repartition) | M03 | — |
 | TLS method for the web UI | M06 | IT |
 | Automatic reboot policy | M06 | Teacher |
 | Student shell access (default: none) | M07 | Teacher |
