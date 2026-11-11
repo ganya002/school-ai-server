@@ -1,0 +1,8 @@
+---
+description: Follow the project agent guide
+alwaysApply: true
+---
+
+Follow [AGENTS.md](../../AGENTS.md) at the repository root. It is the source of truth for every coding agent in this repository.
+
+DeepSeek owns Node A. Claude owns Node B. Coordinate only through the repo and GitHub issues. Never edit the other node's host-specific files. Never commit secrets or real IPs. Never force-push.

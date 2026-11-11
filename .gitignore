@@ -100,3 +100,12 @@ __pycache__/
 .venv/
 venv/
 publish-state.json
+
+# Extra credential / local files (public repo)
+.netrc
+htpasswd
+*.htpasswd
+*.tfvars
+auth.json
+*.local
+!*.local.example

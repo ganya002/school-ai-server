@@ -2,6 +2,8 @@
 
 How the team (max 3 students) works on the School AI Server.
 
+Coding agents (DeepSeek, Claude, Cursor, and others) should also read [AGENTS.md](AGENTS.md).
+
 ## 1. Pick a task from the board
 
 1. Open the [project board](README.md) and look in the **Ready** column.
@@ -41,9 +43,15 @@ Some tasks only apply to one path (e.g. *(VM path)* or *only if Docker was chose
 ## 3. Branches and pull requests
 
 - Branch name: `<issue-number>-short-description`, e.g. `42-ufw-port-matrix`.
+- Small commits and pull requests. Reference the issue in the message, e.g. `Refs #12` or `Closes #12`.
 - Open a pull request that links the issue (`Closes #42`).
 - A second team member reviews every pull request.
 - Never force-push to `main`.
+- Before you push, scan the diff for secrets and real addresses:
+
+  ```bash
+  ./scripts/check-secrets.sh
+  ```
 
 ## 4. Decisions
 
@@ -60,7 +68,7 @@ Record important decisions as ADRs in [`decisions/`](decisions/) using [`0000-te
 - Databases (`*.db`, `*.sqlite`), chat exports or logs containing student data
 - Student names, lists of student accounts or any other personal data
 
-**Infrastructure details** (hostnames, IP addresses, VLANs, usernames): **TBD**. Agree with school IT what may be stored in this private repository (M01 task *Agree which infrastructure details may be committed to the private repository*). Until then use placeholders such as `AI_SERVER_HOSTNAME`, `AI_SERVER_IP`, `ADMIN_VPN_RANGE`, `STUDENT_NET_RANGE`.
+**This repository is public.** Infrastructure details (hostnames, IP addresses, MAC addresses, VLANs, usernames): **do not commit real values.** Agree with school IT what, if anything, may ever be stored here (M01 task *Agree which infrastructure details may be committed to the repository*). Until then — and by default — use placeholders such as `AI_SERVER_HOSTNAME`, `AI_SERVER_IP`, `ADMIN_VPN_RANGE`, `STUDENT_NET_RANGE`, and documentation IPs from [RFC 5737](https://datatracker.ietf.org/doc/html/rfc5737) (`192.0.2.x`, `198.51.100.x`, `203.0.113.x`).
 
 **Change requests to school IT:** process TBD (M01 task *Identify the school IT contact for the AI server*).
 
@@ -70,6 +78,8 @@ If a secret is committed by accident, tell the project owner and school IT immed
 
 ## 6. Writing documentation
 
+- Write documentation in **English**, except student-facing text (AUP, student guide, banners), which is **Norwegian bokmål** (English optional alongside).
 - Write `TBD` for anything not known yet. Never guess school infrastructure details.
+- When you finish a task, update the relevant docs and, if the change is in scope, [docs/acceptance-checklist.md](docs/acceptance-checklist.md).
 - Link official documentation (Ubuntu, NVIDIA, Ollama/llama.cpp/vLLM, Open WebUI, Hugging Face model cards, Ansible, Wazuh, Proxmox).
 - Only record results that someone actually measured or observed.
