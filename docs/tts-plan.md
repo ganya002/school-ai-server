@@ -12,6 +12,10 @@ Students should be able to reach the gateway from **any network** (home, mobile 
 
 Install method: native Windows / `pip` in a venv. **WSL2 or Docker Desktop only with Gabby's OK, not the default.**
 
+Neither VoxCPM2 nor Piper ships an OpenAI-compatible `/v1/audio/speech` server on Windows (VoxCPM2 has a Python API, CLI and Gradio demo; Piper's HTTP server uses `POST /synthesize`). Both are wrapped by [`scripts/windows/tts/openai_tts_server.py`](../scripts/windows/tts/openai_tts_server.py), one process per engine on its own `127.0.0.1` port. Benchmarks use [`scripts/windows/tts/bench_tts.py`](../scripts/windows/tts/bench_tts.py).
+
+**Piper licence:** the maintained engine (`piper-tts`, [OHF-Voice/piper1-gpl](https://github.com/OHF-Voice/piper1-gpl)) is **GPL-3.0-or-later**; the original MIT repo (rhasspy/piper) is archived. Running it as an internal service is fine (GPL, not AGPL). The Norwegian voices `no_NO-talesyntese-medium` (1 speaker) and `no_NO-nvcc-medium` (10 speakers) are **CC0** (Språkbanken data).
+
 Node A is an RTX 5070 Ti (16 GB). That figure is the discrete GPU only: the iGPU's memory does **not** add to it. Before any PyTorch model on Node A, install a **cu128+** build and confirm `sm_120` is in `torch.cuda.get_arch_list()`.
 
 ## 2. Main lineup
@@ -24,7 +28,7 @@ These are the models we plan to install and benchmark first (VRAM, time-to-first
 | Qwen3-TTS 12Hz 1.7B | Near-ElevenLabs English, short clone | A (RTX 5070 Ti 16 GB) | ~6 GB | fast (~97 ms first packet; 3 s clone) | English (card also lists other languages; Norwegian is not the reason we pick it) | 3 s clone | Apache 2.0 | `pip install -U qwen-tts` (no FlashAttention on Windows) | [Qwen/Qwen3-TTS-12Hz-1.7B-Base](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base) |
 | Phonon 31M | Instant English replies | A | low (31M) | instant | English | No (preset / model card) | Apache 2.0 | `pip install ptts` (ships an OpenAI-compatible server) | [gradium/phonon-31m-en](https://huggingface.co/gradium/phonon-31m-en) |
 | Kokoro-82M | Extra English preset voices | A | low (82M) | instant / fast | English | Preset voices | Apache 2.0 | [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) `start-gpu.ps1` | [hexgrad/Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) · [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) |
-| Piper `no_NO` | Instant Norwegian fallback, CPU | **Both** (CPU) | CPU (almost no VRAM) | instant | Norwegian | Preset voices | MIT | Piper + [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) `no_NO` | [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) |
+| Piper `no_NO` | Instant Norwegian fallback, CPU | **Both** (CPU) | CPU (almost no VRAM) | instant | Norwegian | Preset voices | Engine GPL-3.0-or-later (`piper-tts`); voices CC0 | Piper + [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) `no_NO` | [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) |
 
 ## 3. Model catalogue
 
@@ -37,7 +41,7 @@ A larger menu so the team can see what each option is for. **Speed tier:** insta
 | Qwen3-TTS 12Hz 0.6B | Lighter Qwen3 English when 1.7B is tight | A (or B) | lower than 1.7B | fast | English (plus other card languages) | Yes (same family) | Apache 2.0 | [Qwen/Qwen3-TTS-12Hz-0.6B-Base](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-Base) |
 | Phonon 31M | Instant English, tiny footprint | A | very low | instant | English | No (lightweight English model) | Apache 2.0 | [gradium/phonon-31m-en](https://huggingface.co/gradium/phonon-31m-en) |
 | Kokoro-82M | Instant English preset voices | A | very low | instant | English | Preset voices | Apache 2.0 | [hexgrad/Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) · [Kokoro-FastAPI](https://github.com/remsky/Kokoro-FastAPI) |
-| Piper `no_NO` | Instant Norwegian fallback on CPU | Both (CPU) | CPU | instant | Norwegian | Preset voices | MIT | [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) |
+| Piper `no_NO` | Instant Norwegian fallback on CPU | Both (CPU) | CPU | instant | Norwegian | Preset voices | Engine GPL-3.0-or-later; voices CC0 | [rhasspy/piper-voices](https://huggingface.co/rhasspy/piper-voices) |
 | Ming-3.0-tts-0.5B | Slow-but-excellent English that still fits 12/16 GB; strong blind-test score in this size | A or B | fits 12/16 GB (measure) | slow-quality | English (also zh and others; we would use it for English) | Zero-shot + voice design | MIT | [inclusionAI/Ming-3.0-tts-0.5B](https://huggingface.co/inclusionAI/Ming-3.0-tts-0.5B) |
 | Orpheus 3B | Expressive / emotional English | A (16 GB preferred) | ~3B class (measure) | fast / slow-quality (measure) | English | Zero-shot; emotion tags | Llama-based terms for the weights (repo code Apache 2.0) — confirm before any public use | [canopylabs/orpheus-3b-0.1-ft](https://huggingface.co/canopylabs/orpheus-3b-0.1-ft) |
 | Sesame CSM-1B | Conversational English with dialogue context | A or B | ~1B class (measure) | fast (measure) | English | Conversational context | Apache 2.0 | [sesame/csm-1b](https://huggingface.co/sesame/csm-1b) |
