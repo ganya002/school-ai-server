@@ -1,0 +1,6 @@
+model,voice,lang,run,latency_s,audio_s,rtf,x_realtime,bytes,error
+piper,nvcc:0,no,1,1.088,7.036,0.155,6.47,310316,
+piper,nvcc:0,no,2,1.019,7.024,0.145,6.89,309804,
+piper,nvcc:0,no,3,1.101,6.989,0.158,6.35,308268,
+piper,nvcc:0,no,4,1.108,7.036,0.157,6.35,310316,
+piper,nvcc:0,no,5,1.089,7.175,0.152,6.59,316460,

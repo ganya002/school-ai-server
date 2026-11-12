@@ -1,0 +1,11 @@
+model,voice,lang,run,latency_s,audio_s,rtf,x_realtime,bytes,error
+voxcpm2,default,no,1,12.596,6.24,2.019,0.5,599084,
+voxcpm2,default,no,2,13.129,6.4,2.051,0.49,614444,
+voxcpm2,default,no,3,12.192,5.92,2.059,0.49,568364,
+voxcpm2,default,no,4,14.702,7.2,2.042,0.49,691244,
+voxcpm2,default,no,5,17.72,8.64,2.051,0.49,829484,
+voxcpm2,default,en,1,14.409,7.04,2.047,0.49,675884,
+voxcpm2,default,en,2,15.06,7.36,2.046,0.49,706604,
+voxcpm2,default,en,3,15.358,7.68,2.0,0.5,737324,
+voxcpm2,default,en,4,11.434,5.6,2.042,0.49,537644,
+voxcpm2,default,en,5,14.841,7.36,2.016,0.5,706604,
