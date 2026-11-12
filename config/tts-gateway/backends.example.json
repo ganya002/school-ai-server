@@ -1,0 +1,11 @@
+{
+  "_comment": "Copy to backends.json on the gateway node. Placeholder addresses only: 127.0.0.1 = engine on the gateway node itself; 192.0.2.x = the peer node over the interconnect (M15). Never commit real IPs.",
+  "models": {
+    "voxcpm2":  {"url": "http://192.0.2.11:18101", "node": "B", "voices": ["default", "<free-text voice description>"], "languages": ["no", "en"]},
+    "piper-b":  {"url": "http://192.0.2.11:18102", "node": "B", "voices": ["talesyntese", "nvcc:0"], "languages": ["no"]},
+    "qwen3-tts": {"url": "http://127.0.0.1:18001", "node": "A", "voices": ["TBD"], "languages": ["en"]},
+    "phonon":   {"url": "http://127.0.0.1:18002", "node": "A", "voices": ["TBD"], "languages": ["en"]},
+    "kokoro":   {"url": "http://127.0.0.1:18003", "node": "A", "voices": ["TBD"], "languages": ["en"]},
+    "piper-a":  {"url": "http://127.0.0.1:18004", "node": "A", "voices": ["talesyntese"], "languages": ["no"]}
+  }
+}
