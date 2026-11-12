@@ -72,8 +72,8 @@ Do not commit real IPs. Each engine listens on `127.0.0.1` only. The gateway (TB
 | Phonon 31M | A | `127.0.0.1` | 18002 |
 | Kokoro-FastAPI | A | `127.0.0.1` | 18003 |
 | Piper `no_NO` | A | `127.0.0.1` | 18004 |
-| VoxCPM2 | B | `127.0.0.1` | 18101 |
-| Piper `no_NO` | B | `127.0.0.1` | 18102 |
+| VoxCPM2 | B | `127.0.0.1` | 18101 (installed 2026-11-11, #240) |
+| Piper `no_NO` | B | `127.0.0.1` | 18102 (installed 2026-11-11, #245) |
 | Gateway / voice picker | TBD | localhost, Funnel in front | 443, 8443 or 10000 |
 
 Record the final mapping here once it is decided. Health checks and interconnect allowlists use these placeholders only.
@@ -119,6 +119,17 @@ For each installed model, post in the issue (placeholders only):
 - Time-to-first-audio
 - Real-time factor (audio duration / wall time)
 - Short notes on a Norwegian and/or English sample (no student recordings)
+
+### Node B results (2026-11-11)
+
+Measured with [`bench_tts.py`](../scripts/windows/tts/bench_tts.py): 5 runs per language after one warm-up, non-streaming, so latency = time-to-first-audio. RTF = latency / audio (below 1 = faster than real time). Raw CSVs are in [`benchmarks/results/`](../benchmarks/results/).
+
+| Engine (Node B) | Versions | Median latency NO / EN | RTF | VRAM | Notes |
+| --- | --- | --- | --- | --- | --- |
+| VoxCPM2 | voxcpm 2.0.3, torch 2.8.0+cu128, `optimize=False` | 13.1 s / 14.8 s | 2.05 | ~5.2 GB loaded, 5.6 GB peak | 2x slower than real time without `torch.compile`; speed-up options in #240 |
+| Piper `no_NO-talesyntese-medium` | piper-tts 1.8.0, onnxruntime 1.31.1 (CPU) | 0.97 s / 1.13 s | 0.15 | ~0 (CPU) | `nvcc` voice: RTF 0.16 |
+
+Listening notes are still TBD (a human must listen to the samples).
 
 ## 9. Related issues
 
