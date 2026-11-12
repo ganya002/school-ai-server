@@ -25,7 +25,7 @@ Ask a team admin for a key. Do not share keys. If a key leaks, it will be revoke
 
 ## 2. Pick a voice or model
 
-The `model` and `voice` fields choose a backend on Node A or Node B (for example VoxCPM2, Qwen3-TTS, Phonon, Kokoro, or Piper Norwegian). The exact IDs will be listed here after the voice-picker work is done. Languages in the main lineup are **Norwegian and English**.
+The `model` and `voice` fields choose a backend on Node A or Node B (for example VoxCPM2, Qwen3-TTS, Phonon, Kokoro, or Piper Norwegian). Call `GET /v1/models` with your key to see the current list. Draft IDs (#250): `voxcpm2` (Norwegian + English; `voice` is `default` or a short voice description), `piper-b` / `piper-a` (Norwegian; voices `talesyntese`, `nvcc:0`–`nvcc:9`), and the Node A English engines once they are installed. Add `"stream": true` to start receiving audio before the whole sentence is done. Languages in the main lineup are **Norwegian and English**.
 
 ## 3. Limits
 

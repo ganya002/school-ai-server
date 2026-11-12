@@ -74,7 +74,7 @@ Do not commit real IPs. Each engine listens on `127.0.0.1` only. The gateway (TB
 | Piper `no_NO` | A | `127.0.0.1` | 18004 |
 | VoxCPM2 | B | `127.0.0.1` | 18101 |
 | Piper `no_NO` | B | `127.0.0.1` | 18102 |
-| Gateway / voice picker | TBD | localhost, Funnel in front | 443, 8443 or 10000 |
+| Gateway / voice picker ([draft](../scripts/windows/tts/tts_gateway.py), #250) | TBD | `127.0.0.1`, Funnel in front | listens on 18080; Funnel publishes it on 443, 8443 or 10000 |
 
 Record the final mapping here once it is decided. Health checks and interconnect allowlists use these placeholders only.
 
@@ -110,6 +110,12 @@ Must be in place before the tunnel is turned on for students:
 - **Do not store** request text or generated audio (beyond short-lived processing in memory). Logging stays within the privacy ADR (M02): no content dumps in this repo or on disk by default.
 
 Windows Defender Firewall stays default-deny for inbound LAN/internet traffic. Funnel traffic is outbound from the node.
+
+The draft gateway ([`tts_gateway.py`](../scripts/windows/tts/tts_gateway.py), example config in [`config/tts-gateway/`](../config/tts-gateway/)) implements the list above:
+- **API keys:** keys are stored only as SHA-256 hashes in `keys.json`, which is re-read when it changes, so a key can be revoked without a restart.
+- **Limits:** per-key requests per minute and a daily character quota (kept in memory), plus 16 KB body and 1000-character input limits.
+- **Kill switches:** a `KILL` file stops all traffic (503); `"disabled": true` stops one key.
+- **No storage:** the access log is off.
 
 ## 8. Benchmarks
 
