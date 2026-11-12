@@ -3,8 +3,9 @@
 Benchmark an OpenAI-compatible TTS endpoint (POST /v1/audio/speech returning WAV).
 
 Standard library only. Per request it records:
-  latency_s   wall time until the whole WAV arrived. For non-streaming servers this is
-              also the time-to-first-audio.
+  latency_s   wall time until the whole WAV arrived
+  ttfa_s      time-to-first-audio: with --stream, time until the first PCM bytes after the WAV
+              header arrive; without --stream it equals latency_s
   audio_s     length of the returned audio (from the WAV header)
   rtf         latency_s / audio_s   (below 1.0 = faster than real time)
   x_realtime  audio_s / latency_s   (the "audio duration / wall time" figure in docs/tts-plan.md)
@@ -15,7 +16,7 @@ Example (PowerShell, on the node, server on localhost):
 
 Test sentences are fixed below (no student data). API keys: env var BENCH_API_KEY, never on the command line.
 """
-import argparse, csv, io, json, os, statistics, subprocess, sys, threading, time, urllib.request, wave
+import argparse, csv, json, os, statistics, struct, subprocess, sys, threading, time, urllib.request
 
 TEXTS = {
     "no": "Hei! Dette er en test av norsk talesyntese på skolens server. Været i dag er fint, og vi lærer om kunstig intelligens.",
@@ -34,18 +35,24 @@ def vram_sampler(stop, peak):
         stop.wait(.2)
 
 
-def one(base_url, model, voice, text, key, timeout):
-    body = json.dumps({"model": model, "input": text, "voice": voice, "response_format": "wav"}).encode()
+def one(base_url, model, voice, text, key, timeout, stream=False):
+    body = json.dumps({"model": model, "input": text, "voice": voice, "response_format": "wav", "stream": stream}).encode()
     req = urllib.request.Request(base_url.rstrip("/") + "/audio/speech", data=body, method="POST",
                                  headers={"Content-Type": "application/json",
                                           **({"Authorization": f"Bearer {key}"} if key else {})})
-    t0 = time.perf_counter()
+    t0 = time.perf_counter(); ttfa = None; data = b""
     with urllib.request.urlopen(req, timeout=timeout) as r:
-        data = r.read()
+        while True:
+            chunk = r.read1(65536) if hasattr(r, "read1") else r.read(65536)
+            if not chunk:
+                break
+            data += chunk
+            if ttfa is None and len(data) > 44:
+                ttfa = time.perf_counter() - t0
     latency = time.perf_counter() - t0
-    with wave.open(io.BytesIO(data)) as w:
-        audio = w.getnframes() / w.getframerate()
-    return {"latency_s": round(latency, 3), "audio_s": round(audio, 3),
+    rate = struct.unpack("<I", data[24:28])[0]      # streamed WAV has no valid length field: count PCM bytes
+    audio = (len(data) - 44) / 2 / rate
+    return {"ttfa_s": round(ttfa if stream else latency, 3), "latency_s": round(latency, 3), "audio_s": round(audio, 3),
             "rtf": round(latency / audio, 3) if audio else None,
             "x_realtime": round(audio / latency, 2) if latency else None, "bytes": len(data)}
 
@@ -59,13 +66,14 @@ def main():
     ap.add_argument("--runs", type=int, default=5)
     ap.add_argument("--warmup", type=int, default=1)
     ap.add_argument("--timeout", type=float, default=600)
+    ap.add_argument("--stream", action="store_true", help="request streamed audio and measure real time-to-first-audio")
     ap.add_argument("--out", help="CSV file to append results to")
     a = ap.parse_args()
     key = os.environ.get("BENCH_API_KEY", "")
     langs = ["no", "en"] if a.lang == "both" else [a.lang]
 
     for _ in range(a.warmup):
-        one(a.base_url, a.model, a.voice, TEXTS[langs[0]], key, a.timeout)
+        one(a.base_url, a.model, a.voice, TEXTS[langs[0]], key, a.timeout, a.stream)
 
     stop, peak = threading.Event(), [0]
     sampler = threading.Thread(target=vram_sampler, args=(stop, peak), daemon=True); sampler.start()
@@ -73,10 +81,10 @@ def main():
     for lang in langs:
         for run in range(1, a.runs + 1):
             try:
-                r = one(a.base_url, a.model, a.voice, TEXTS[lang], key, a.timeout)
+                r = one(a.base_url, a.model, a.voice, TEXTS[lang], key, a.timeout, a.stream)
             except Exception as e:        # record failures, do not hide them
                 r = {"error": str(e)[:200]}
-            rows.append({"model": a.model, "voice": a.voice, "lang": lang, "run": run, **r})
+            rows.append({"model": a.model, "voice": a.voice, "lang": lang, "run": run, "stream": a.stream, **r})
             print(f"{lang} run {run}: {r}", file=sys.stderr)
     stop.set(); sampler.join(1)
 
@@ -85,12 +93,13 @@ def main():
     for lang in langs:
         L = [r for r in ok if r["lang"] == lang]
         if L:
-            summary[lang] = {"median_latency_s": statistics.median(r["latency_s"] for r in L),
+            summary[lang] = {"median_ttfa_s": statistics.median(r["ttfa_s"] for r in L),
+                             "median_latency_s": statistics.median(r["latency_s"] for r in L),
                              "median_rtf": statistics.median(r["rtf"] for r in L),
                              "median_x_realtime": statistics.median(r["x_realtime"] for r in L)}
     print(json.dumps(summary, indent=2))
     if a.out:
-        fields = ["model", "voice", "lang", "run", "latency_s", "audio_s", "rtf", "x_realtime", "bytes", "error"]
+        fields = ["model", "voice", "lang", "run", "stream", "ttfa_s", "latency_s", "audio_s", "rtf", "x_realtime", "bytes", "error"]
         new = not os.path.exists(a.out)
         with open(a.out, "a", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=fields, extrasaction="ignore")
