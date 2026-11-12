@@ -1,0 +1,4 @@
+model,voice,lang,run,stream,ttfa_s,latency_s,audio_s,rtf,x_realtime,bytes,error
+voxcpm2,default,no,1,False,15.804,15.804,7.84,2.016,0.5,752684,
+voxcpm2,default,no,2,False,19.082,19.082,8.48,2.25,0.44,814124,
+voxcpm2,default,no,3,False,18.495,18.495,9.28,1.993,0.5,890924,
