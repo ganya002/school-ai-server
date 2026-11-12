@@ -3,7 +3,10 @@
 OpenAI-compatible text-to-speech server for one local engine (VoxCPM2 or Piper).
 
 Exposes:
-  POST /v1/audio/speech   {"model": "...", "input": "text", "voice": "...", "response_format": "wav", "speed": 1.0}
+  POST /v1/audio/speech   {"model": "...", "input": "text", "voice": "...", "response_format": "wav", "speed": 1.0,
+                           "stream": false}
+                          "stream": true (or OpenAI's "stream_format": "audio") sends a WAV header at once and
+                          then 16-bit PCM chunks as they are generated, so playback can start early.
   GET  /v1/models         the one model this process serves
   GET  /health            {"status": "ok"} once the model is loaded
 
@@ -30,6 +33,12 @@ from pathlib import Path
 MAX_CHARS = 2000          # longest accepted input; keeps one request from hogging the GPU
 
 
+def wav_stream_header(rate: int) -> bytes:
+    """WAV header with unknown length (0xFFFFFFFF), as used for streamed WAV; most players accept it."""
+    return (b"RIFF" + struct.pack("<I", 0xFFFFFFFF) + b"WAVEfmt " + struct.pack("<IHHIIHH", 16, 1, 1, rate, rate * 2, 2, 16)
+            + b"data" + struct.pack("<I", 0xFFFFFFFF))
+
+
 def wav_bytes_int16(pcm: bytes, rate: int) -> bytes:
     buf = io.BytesIO()
     with wave.open(buf, "wb") as w:
@@ -46,6 +55,9 @@ class Dummy:
         n = int(rate * secs)
         pcm = b"".join(struct.pack("<h", int(8000 * math.sin(2 * math.pi * 440 * i / rate))) for i in range(n))
         return wav_bytes_int16(pcm, rate)
+    def stream(self, text, voice, speed):
+        wav = self.speak(text, voice, speed)
+        yield 22050, wav[44:]
 
 
 class VoxCPM2:
@@ -64,6 +76,12 @@ class VoxCPM2:
         buf = io.BytesIO()
         self.sf.write(buf, wav, self.rate, format="WAV", subtype="PCM_16")
         return buf.getvalue()             # speed is not supported by VoxCPM2 and is ignored
+    def stream(self, text, voice, speed):
+        import numpy as np
+        if voice and voice != "default":
+            text = f"({voice}){text}"
+        for chunk in self.m.generate_streaming(text=text, cfg_value=2.0, inference_timesteps=10):
+            yield self.rate, (np.clip(chunk, -1, 1) * 32767).astype("<i2").tobytes()
 
 
 class Piper:
@@ -84,18 +102,24 @@ class Piper:
         self.default = "talesyntese" if "talesyntese" in self.v else next(iter(self.v))
     def voices(self): return list(self.v)
     def speak(self, text, voice, speed):
+        chunks = list(self._chunks(text, voice, speed))
+        return wav_bytes_int16(b"".join(pcm for _, pcm in chunks), chunks[0][0])
+    def stream(self, text, voice, speed):
+        yield from self._chunks(text, voice, speed)   # Piper yields one chunk per sentence
+    def _chunks(self, text, voice, speed):
         name, _, spk = (voice or self.default).partition(":")
         if name == "default":
             name = self.default
         if name not in self.v:
             raise ValueError(f"unknown voice '{name}', choose from {self.voices()}")
         cfg = self.Cfg(length_scale=1 / speed, speaker_id=int(spk) if spk else None)
-        chunks = list(self.v[name].synthesize(text, syn_config=cfg))
-        return wav_bytes_int16(b"".join(c.audio_int16_bytes for c in chunks), chunks[0].sample_rate)
+        for c in self.v[name].synthesize(text, syn_config=cfg):
+            yield c.sample_rate, c.audio_int16_bytes
 
 
 def build_app(engine, model_id):
     from fastapi import FastAPI, HTTPException, Response
+    from fastapi.responses import StreamingResponse
     from pydantic import BaseModel, Field
 
     class Speech(BaseModel):
@@ -104,6 +128,8 @@ def build_app(engine, model_id):
         voice: str = "default"
         response_format: str = "wav"
         speed: float = Field(1.0, ge=0.25, le=4.0)
+        stream: bool = False
+        stream_format: str | None = None   # OpenAI name; "audio" means stream
 
     app = FastAPI(title=f"TTS ({engine.name})", docs_url=None, redoc_url=None)
     lock = threading.Lock()               # one synthesis at a time per engine; the GPU is shared
@@ -118,6 +144,23 @@ def build_app(engine, model_id):
     def speech(req: Speech):
         if req.response_format != "wav":
             raise HTTPException(400, "only response_format 'wav' is supported")
+        if req.stream or req.stream_format == "audio":
+            gen = engine.stream(req.input, req.voice, req.speed)
+            lock.acquire()
+            try:
+                rate, first = next(gen)        # surface errors (bad voice) as HTTP 400 before streaming starts
+            except ValueError as e:
+                lock.release(); raise HTTPException(400, str(e))
+            except BaseException:
+                lock.release(); raise
+            def body():
+                try:
+                    yield wav_stream_header(rate) + first
+                    for _, pcm in gen:
+                        yield pcm
+                finally:
+                    lock.release()
+            return StreamingResponse(body(), media_type="audio/wav")
         try:
             with lock:
                 audio = engine.speak(req.input, req.voice, req.speed)
